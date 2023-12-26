@@ -1,0 +1,30 @@
+Ver 2.0.2
+	-Support for Classic
+	-Started to add support for translations.
+Ver 1.13.7
+	-Tweaked Slice and Dice a little.
+
+Ver 1.13.6
+	-Fixing poison warning errors.
+	-Added Slice and Dice to spellmenu.
+
+Ver 1.13.5
+	-Adjustment to Gouge and Blind.
+	-Adjusted Evis for those that dont want combo points to go to waste while leveling.
+
+Ver 1.13.4
+	-Adjustments to Kidney Shot timing.
+
+Ver 1.13.3
+	-Overhauled Rotation.
+	-Added Spellmenu.
+
+Ver 1.13.2
+	-Minor update.
+	-Added Cheap Shot as option for Stealth.
+
+Ver 1.13.1
+	-Removed Stealth suggestion for now.
+
+Ver 1.13.0
+	-Initial release for Classic WoW.
