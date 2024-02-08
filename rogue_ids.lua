@@ -50,29 +50,23 @@ local ConROC_Rogue, ids = ...;
 		SliceandDiceRank1 = 5171,
 		SliceandDiceRank2 = 6774,
 	}
-	--[[ids.Ass_Talent = {
-		ImprovedEviscerate = 1,
-		RemorselessAttacks = 2,
-		Malice = 3,
-		 
-		Ruthlessness = 4,
-		Murder = 5,
-		ImprovedSliceandDice = 6,
-		 
-		RelentlessStrikes = 7,
-		ImprovedExposeArmor = 8,
-		Lethality = 9,
-		 
-		VilePoisons = 10,
-		ImprovedPoisons = 11,
-		 
-		ColdBlood = 12,
-		ImprovedKidneyShot = 13,
-		 
-		SealFate = 14,
-		 
-		Vigor = 15,
-	}--]]
+	ids.Assassination_Talent = { 
+		ImprovedPoisons =  1, 
+		Lethality =  2, 
+		Malice =  3, 
+		RemorselessAttacks =  4, 
+		Ruthlessness =  5, 
+		Murder =  6, 
+		ImprovedEviscerate =  7, 
+		ImprovedSliceandDice =  8, 
+		ImprovedExposeArmor =  9, 
+		ImprovedKidneyShot =  10, 
+		ColdBlood =  11, 
+		RelentlessStrikes =  12, 
+		SealFate =  13, 
+		Vigor =  14, 
+		VilePoisons =  15, 
+	} 
 --Combat
 	ids.Com_Ability = {
 		AdrenalineRush = 13750,
@@ -112,33 +106,27 @@ local ConROC_Rogue, ids = ...;
 		SprintRank2 = 8696,
 		SprintRank3 = 11305,
 	}
-	--[[ids.Com_Talent = {
-		ImprovedGouge = 1,
-		ImprovedSinisterStrike = 2,
-		LightningReflexes = 3,
-		 
-		ImprovedBackstab = 4,
-		Deflection = 5,
-		Precision = 6,
-		 
-		Endurance = 7,
-		Riposte = 8,
-		ImprovedSprint = 9,
-		 
-		ImprovedKick = 10,
-		DaggerSpecialization = 11,
-		DualWieldSpecialization = 12,
-		 
-		MaceSpecialization = 13,
-		BladeFlurry = 14,
-		SwordSpecialization = 15,
-		FistWeaponSpecialization = 16,
-		 
-		WeaponExpertise = 17,
-		Aggression = 18,
-		 
-		AdrenalineRush = 19,
-	}--]]
+	ids.Combat_Talent = { 
+		Precision =  1, 
+		DaggerSpecialization =  2, 
+		FistWeaponSpecialization =  3, 
+		MaceSpecialization =  4, 
+		LightningReflexes =  5, 
+		Deflection =  6, 
+		ImprovedSinisterStrike =  7, 
+		ImprovedBackstab =  8, 
+		ImprovedGouge =  9, 
+		Endurance =  10, 
+		AdrenalineRush =  11, 
+		ImprovedKick =  12, 
+		DualWieldSpecialization =  13, 
+		ImprovedSprint =  14, 
+		BladeFlurry =  15, 
+		SwordSpecialization =  16, 
+		Riposte =  17, 
+		Aggression =  18, 
+		WeaponExpertise =  19, 
+	} 
 --Subtlety
 	ids.Sub_Ability = {
 		Blind = 2094,
@@ -162,31 +150,25 @@ local ConROC_Rogue, ids = ...;
 		VanishRank1 = 1856,
 		VanishRank2 = 1857,
 	}
-	--[[ids.Sub_Talent = {
-		MasterofDeception = 1,
-		Opportunity = 2,
-		 
-		SleightofHand = 3,
-		Elusiveness = 4,
-		Camouflage = 5,
-		 
-		Initiative = 6,
-		GhostlyStrike = 7,
-		ImprovedAmbush = 8,
-		 
-		Setup = 9,
-		ImprovedSap = 10,
-		SerratedBlades = 11,
-		 
-		HeightenedSenses = 12,
-		Preparation = 13,
-		DirtyDeeds = 14,
-		Hemorrhage = 15,
-		 
-		Deadliness = 16,
-		  
-		Premeditation = 17,
-	}--]]
+	ids.Subtlety_Talent = { 
+		MasterofDeception =  1, 
+		Camouflage =  2, 
+		Initiative =  3, 
+		Setup =  4, 
+		Elusiveness =  5, 
+		Opportunity =  6, 
+		ImprovedSap =  7, 
+		ImprovedAmbush =  8, 
+		DirtyDeeds =  9, 
+		Preparation =  10, 
+		GhostlyStrike =  11, 
+		Premeditation =  12, 
+		Hemorrhage =  13, 
+		SerratedBlades =  14, 
+		SleightofHand =  15, 
+		HeightenedSenses =  16, 
+		Deadliness =  17, 
+	}
 --Poisons
 	ids.Poisons = { -- is items not spells
 		CripplingPoisonRank1 = {id = 3775, name = "Crippling Poison", enchantID = 22, type = "poison"},
@@ -234,6 +216,20 @@ local ConROC_Rogue, ids = ...;
 		[705]	=	"Wound Poison III",
 		[706]	=	"Wound Poison IV",
 	}
+	ids.Runes = {
+		BetweentheEyes = 400009,
+		BladeDance = 400012,
+		Envenom = 399963,
+		MainGauche = 424919,
+		Mutilate = 399956,
+		QuickDraw = 398169,
+		SaberSlash = 424785,  --424979,
+		Shadowstrike = 399985,
+		Shiv = 424799,
+		Tease = 410412, -- from the rune "Just a Flesh Wound", replaces Faint
+		ShurikenToss = 399986, --Phase 2 - AoE hits up to 5
+		MasterofSubtlety = 425098, --Phase 2 -passive -buff 10% +dmg for 6 sec breaking stealth
+	}
 -- Auras
 	ids.Player_Buff = {
 	
@@ -242,5 +238,6 @@ local ConROC_Rogue, ids = ...;
 
 	}
 	ids.Target_Debuff = {
-	
+		SaberSlash = 424785,
+		--QuickDraw = 
 	}

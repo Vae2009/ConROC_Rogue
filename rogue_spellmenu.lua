@@ -26,12 +26,16 @@ local defaults = {
     ["ConROC_SM_Role_Melee"] = true,
     ["ConROC_Melee_PoisonMH_None"] = true,
     ["ConROC_Melee_PoisonOH_None"] = true,
-    ["ConROC_Melee_Debuff_SliceandDice"] = true,
-    ["ConROC_Melee_Debuff_Garrote"] = true,
-    ["ConROC_Melee_Debuff_Hemorrhage"] = true
 }
 
 ConROCRogueSpells = ConROCRogueSpells or defaults
+
+--[[function ConROC:resetClass(classname)
+    ConROCRogueSpells = nil
+    --ConROCRogueSpells = {}  -- Optional: Set it to an empty table if necessary
+    print("Saved Class Settings for " .. classname .. " has been reset.")
+end]]
+
 local radioGroups = {}
 function ConROC:setRole(radioBtn, roleData, radioButtons)
     for _, btn in ipairs(radioButtons) do
@@ -100,13 +104,19 @@ end
 
 function ConROC:SpellmenuClass()
     ConROC_RoleSettingsTable = {
-    {
+        {
         frameName = "Melee",
         activeTexture = ConROC.Textures.Melee,
         disabledTexture = ConROC.Textures.Melee_disabled,
         role = "ConROC_SM_Role_Melee",
         },
-    {
+        {
+        frameName = "Tank",
+        activeTexture = ConROC.Textures.Tank,
+        disabledTexture = ConROC.Textures.Tank_disabled,
+        role = "ConROC_SM_Role_Tank",
+        },
+        {
         frameName = "PvP",
         activeTexture = ConROC.Textures.PvP,
         disabledTexture = ConROC.Textures.PvP_disabled,
@@ -805,7 +815,7 @@ function ConROC:SpellMenuUpdate(newSpell)
                         oItem:SetPoint("TOPLEFT", lFrame, "BOTTOMLEFT", 0, 0);
                     end
                     if type(_spellData.spellID) == "number" then
-                        if plvl >= _spellData.reqLevel and IsSpellKnown(_spellData.spellID) then
+                        if plvl >= _spellData.reqLevel and (IsSpellKnown(_spellData.spellID) or IsSpellKnownOrOverridesKnown(_spellData.spellID)) then
                             lFrame = oItem;
                             lFrame:Show();
                             if oItem:IsShown() then
@@ -921,7 +931,7 @@ function ConROC:SpellMenuUpdate(newSpell)
                     else
                         oItem:SetPoint("TOPLEFT", lFrame, "BOTTOMLEFT", 0, 0);
                     end
-                    if plvl >= _spellData.reqLevel and IsSpellKnown(_spellData.spellID) then                                                    
+                    if plvl >= _spellData.reqLevel and (IsSpellKnown(_spellData.spellID) or IsSpellKnownOrOverridesKnown(_spellData.spellID)) then
                         lFrame = oItem;
                         lFrame:Show();
                             if oItem:IsShown() then
