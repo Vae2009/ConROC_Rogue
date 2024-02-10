@@ -328,7 +328,7 @@ ConROC:UpdateSpellID()
     local resting = IsResting()
     local mounted = IsMounted()
     local targetPh = ConROC:PercentHealth("target")
-    local inMelee = CheckInteractDistance("target", 3)
+    --local inMelee = CheckInteractDistance("target", 3)
     local inClose = IsSpellInRange(select(1,GetSpellInfo(_SinisterStrike)), "target")
     local hasDagger = ConROC:Equipped("Daggers", "MAINHANDSLOT")
     local dualWielding = ConROC:Equipped("wpn", "MAINHANDSLOT") and ConROC:Equipped("wpn", "SECONDARYHANDSLOT")
@@ -340,7 +340,7 @@ ConROC:UpdateSpellID()
     --Indicators
     ConROC:AbilityBurst(Com_Ability.AdrenalineRush, aRushRDY and incombat and energyPercent <= 40)
     ConROC:AbilityBurst(Ass_Ability.ColdBlood, cBloodRDY and ((stealthed and hasDagger) or combo == comboMax))
-    --	ConROC:AbilityBurst(Sub_Ability.Preparation, prepRDY and incombat);
+    --  ConROC:AbilityBurst(Sub_Ability.Preparation, prepRDY and incombat);
     ConROC:AbilityBurst(_Gouge, ConROC:CheckBox(ConROC_SM_Stun_Gouge) and gougeRDY and not rupDEBUFF and not garDEBUFF and incombat and ConROC:TarYou())
     ConROC:AbilityBurst(Sub_Ability.Blind, ConROC:CheckBox(ConROC_SM_Stun_Blind) and blindRDY and not rupDEBUFF and not garDEBUFF and incombat and ConROC:TarYou())
 
@@ -659,6 +659,9 @@ ConROC:UpdateSpellID()
             if SaberSlashRDY and combo ~= comboMax then
                 return _SaberSlash
             end
+            if MutilateRDY and combo ~= comboMax then
+                return _Mutilate
+            end
             
             if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
                 return _SliceandDice;
@@ -703,7 +706,6 @@ ConROC:UpdateSpellID()
             if gStrikeRDY and ConROC:TarYou() then
                 return Sub_Ability.GhostlyStrike;
             end
-
             if sStrikeRDY and (not hasDagger or ConROC:TarYou()) then
                 return _SinisterStrike;
             end
@@ -731,7 +733,10 @@ ConROC:UpdateSpellID()
                 if SaberSlashRDY and combo ~= comboMax then
                     return _SaberSlash
                 end
-                if sStrikeRDY and combo ~= comboMax and (not IsSpellKnownOrOverridesKnown(_SaberSlash)) then
+                if MutilateRDY and combo ~= comboMax then
+                    return _Mutilate
+                end
+                if sStrikeRDY and combo ~= comboMax and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
                     return _SinisterStrike;
                 end
                 if EnvenomRDY and sndBUFF and combo == comboMax then
@@ -761,7 +766,10 @@ ConROC:UpdateSpellID()
                 if SaberSlashRDY and combo ~= comboMax then
                     return _SaberSlash
                 end
-                if sStrikeRDY and combo ~= comboMax and (not IsSpellKnownOrOverridesKnown(_SaberSlash)) then
+                if MutilateRDY and combo ~= comboMax then
+                    return _Mutilate
+                end
+                if sStrikeRDY and combo ~= comboMax and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
                     return _SinisterStrike;
                 end
                 if EnvenomRDY and sndBUFF and combo == comboMax then
@@ -792,7 +800,7 @@ ConROC:UpdateSpellID()
                 if SaberSlashRDY and combo ~= comboMax then
                     return _SaberSlash
                 end
-                if sStrikeRDY and combo ~= comboMax and (not IsSpellKnownOrOverridesKnown(_SaberSlash)) then
+                if sStrikeRDY and combo ~= comboMax and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
                     return _SinisterStrike;
                 end
                 if EnvenomRDY and sndBUFF and combo == comboMax then
@@ -806,82 +814,82 @@ ConROC:UpdateSpellID()
     --if not SoD
     if stealthed then
         if premRDY then
-			return Sub_Ability.Premeditation;
-		end
+            return Sub_Ability.Premeditation;
+        end
 
-		if ConROC:CheckBox(ConROC_SM_Stun_CheapShot) and cShotRDY and not cBloodBUFF then
-			return Ass_Ability.CheapShot;
-		end
-		
-		if ambushRDY and hasDagger then
-			return _Ambush;
-		end
-		
-		if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and garRDY and not garDEBUFF then
-			return _Garrote;
-		end
+        if ConROC:CheckBox(ConROC_SM_Stun_CheapShot) and cShotRDY and not cBloodBUFF then
+            return Ass_Ability.CheapShot;
+        end
+        
+        if ambushRDY and hasDagger then
+            return _Ambush;
+        end
+        
+        if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and garRDY and not garDEBUFF then
+            return _Garrote;
+        end
 
-		if bStabRDY and hasDagger and not ConROC:TarYou() then
-			return _Backstab;
-		end
-	
-		if sStrikeRDY and not hasDagger then
-			return _SinisterStrike;
-		end
+        if bStabRDY and hasDagger and not ConROC:TarYou() then
+            return _Backstab;
+        end
+    
+        if sStrikeRDY and not hasDagger then
+            return _SinisterStrike;
+        end
     end
     if ripRDY then
-		return Com_Ability.Riposte;
-	end
+        return Com_Ability.Riposte;
+    end
 
-	if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and kShotRDY and combo == comboMax then
-		return _KidneyShot;
-	end
-	
-	if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
-		return _SliceandDice;
-	end
-	
-	if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and exArmorRDY and not exArmorDEBUFF and combo == comboMax and targetPh >= 20 then
-		return _ExposeArmor;
-	end
-	
-	if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and rupRDY and not rupDEBUFF and combo == comboMax and targetPh >= 15 then
-		return _Rupture;
-	end
-	
-	if bFlurryRDY and tarInMelee >= 2 then
-		return Com_Ability.BladeFlurry;
-	end
-	
-	if evisRDY and (combo == comboMax or (combo >= 1 and ((targetPh <= 5 and ConROC:Raidmob()) or (targetPh <= 20 and not ConROC:Raidmob())))) then
-		return _Eviscerate;
-	end
-	
-	if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and hemoRDY and not hemoDEBUFF then
-		return _Hemorrhage;
-	end
-	
-	if bStabRDY and hasDagger and not ConROC:TarYou() and incombat then
-		return _Backstab;
-	end
-	
-	if gStrikeRDY and ConROC:TarYou() then
-		return Sub_Ability.GhostlyStrike;
-	end
+    if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and kShotRDY and combo == comboMax then
+        return _KidneyShot;
+    end
+    
+    if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
+        return _SliceandDice;
+    end
+    
+    if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and exArmorRDY and not exArmorDEBUFF and combo == comboMax and targetPh >= 20 then
+        return _ExposeArmor;
+    end
+    
+    if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and rupRDY and not rupDEBUFF and combo == comboMax and targetPh >= 15 then
+        return _Rupture;
+    end
+    
+    if bFlurryRDY and tarInMelee >= 2 then
+        return Com_Ability.BladeFlurry;
+    end
+    
+    if evisRDY and (combo == comboMax or (combo >= 1 and ((targetPh <= 5 and ConROC:Raidmob()) or (targetPh <= 20 and not ConROC:Raidmob())))) then
+        return _Eviscerate;
+    end
+    
+    if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and hemoRDY and not hemoDEBUFF then
+        return _Hemorrhage;
+    end
+    
+    if bStabRDY and hasDagger and not ConROC:TarYou() and incombat then
+        return _Backstab;
+    end
+    
+    if gStrikeRDY and ConROC:TarYou() then
+        return Sub_Ability.GhostlyStrike;
+    end
 
-	if sStrikeRDY and (not hasDagger or ConROC:TarYou()) then
-		return _SinisterStrike;
-	end
+    if sStrikeRDY and (not hasDagger or ConROC:TarYou()) then
+        return _SinisterStrike;
+    end
 
-	return nil;
+    return nil;
 end
 
 function ConROC.Rogue.Defense(_, timeShift, currentSpell, gcd) --
     --Ranks
     if IsSpellKnown(Sub_Ability.StealthRank4) then _Stealth = Sub_Ability.StealthRank4;
-	elseif IsSpellKnown(Sub_Ability.StealthRank3) then _Stealth = Sub_Ability.StealthRank3;
-	elseif IsSpellKnown(Sub_Ability.StealthRank2) then _Stealth = Sub_Ability.StealthRank2; end
-	--Abilities
+    elseif IsSpellKnown(Sub_Ability.StealthRank3) then _Stealth = Sub_Ability.StealthRank3;
+    elseif IsSpellKnown(Sub_Ability.StealthRank2) then _Stealth = Sub_Ability.StealthRank2; end
+    --Abilities
     local stealthRDY = ConROC:AbilityReady(_Stealth, timeShift)
     local evasionRDY = ConROC:AbilityReady(_Evasion, timeShift)
     
@@ -924,8 +932,8 @@ function ConROC:ApplyPoison(_mhPoison, _ohPoison)
         ConROCMainHandBGFrame:Show();
         --ConROCMainHandFrame:Show();
         if _mhAlpha == 1 then
-		    ConROCMainHandFrame:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square","ADD");
-		    ConROCMainHandFrame:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress","ADD");
+            ConROCMainHandFrame:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square","ADD");
+            ConROCMainHandFrame:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress","ADD");
             ConROCMainHandFrame:SetAttribute("macrotext", "/use  " .. mhName .. ";\n/use 16;\n/click StaticPopup1Button1;")
         else
             ConROCMainHandFrame:SetAttribute("macrotext", "")
@@ -935,8 +943,8 @@ function ConROC:ApplyPoison(_mhPoison, _ohPoison)
     else
         ConROCMainHandBGFrame:Hide();
         ConROCMainHandBGFrame:SetNormalTexture("");
-    	ConROCMainHandFrame:SetHighlightTexture("", "MOD");
-    	ConROCMainHandFrame:SetPushedTexture("", "MOD");
+        ConROCMainHandFrame:SetHighlightTexture("", "MOD");
+        ConROCMainHandFrame:SetPushedTexture("", "MOD");
         ConROCMainHandFrame:SetAttribute("macrotext", "")
         mhIcText:SetText("")
     end
@@ -955,7 +963,7 @@ function ConROC:ApplyPoison(_mhPoison, _ohPoison)
         ConROCOffHandFrame:Show();
         if _ohAlpha == 1 then
             ConROCOffHandFrame:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square","ADD");
-		    ConROCOffHandFrame:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress","ADD");
+            ConROCOffHandFrame:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress","ADD");
             ConROCOffHandFrame:SetAttribute("macrotext", "/use " .. ohName .. ";\n/use 17;\n/click StaticPopup1Button1;")
         else
             ConROCOffHandFrame:SetAttribute("macrotext", "")
@@ -965,8 +973,8 @@ function ConROC:ApplyPoison(_mhPoison, _ohPoison)
     else
         ConROCOffHandBGFrame:Hide();
         ConROCOffHandBGFrame:SetNormalTexture("");
-    	ConROCOffHandFrame:SetHighlightTexture("", "MOD");
-    	ConROCOffHandFrame:SetPushedTexture("", "MOD");
+        ConROCOffHandFrame:SetHighlightTexture("", "MOD");
+        ConROCOffHandFrame:SetPushedTexture("", "MOD");
         ConROCOffHandFrame:SetAttribute("macrotext", "")
         ohIcText:SetText("")
     end
