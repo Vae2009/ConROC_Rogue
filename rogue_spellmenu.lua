@@ -113,6 +113,7 @@ function ConROC:SpellmenuClass()
         activeTexture = ConROC.Textures.Tank,
         disabledTexture = ConROC.Textures.Tank_disabled,
         role = "ConROC_SM_Role_Tank",
+        server = ConROC.Seasons.IsSoD,
         },
         {
         frameName = "PvP",
@@ -300,48 +301,50 @@ function ConROC_roles(frame)
 
     local roleSpaceValue = (math.ceil(frame:GetWidth())-20-roleIconSize) / (#ConROC_RoleSettingsTable-1)
     for i, roleData in ipairs(ConROC_RoleSettingsTable) do
-        local radioBtn = CreateFrame("CheckButton", roleData.role, frame, "UIRadioButtonTemplate")
-        radioBtn:SetSize(roleIconSize, roleIconSize)
+        if roleData.server == nil or roleData.server then
+            local radioBtn = CreateFrame("CheckButton", roleData.role, frame, "UIRadioButtonTemplate")
+            radioBtn:SetSize(roleIconSize, roleIconSize)
 
-        local radioNormalTexture = radioBtn:GetNormalTexture()
-        radioNormalTexture:SetTexture(nil)
-        radioNormalTexture:SetAlpha(0)
+            local radioNormalTexture = radioBtn:GetNormalTexture()
+            radioNormalTexture:SetTexture(nil)
+            radioNormalTexture:SetAlpha(0)
 
-        local radioHighlightTexture = radioBtn:GetHighlightTexture()
-        radioHighlightTexture:SetTexture(nil)
-        radioHighlightTexture:SetAlpha(0)
+            local radioHighlightTexture = radioBtn:GetHighlightTexture()
+            radioHighlightTexture:SetTexture(nil)
+            radioHighlightTexture:SetAlpha(0)
 
-        local radioCheckedTexture = radioBtn:GetCheckedTexture()
-        radioCheckedTexture:SetTexture(nil)
-        radioCheckedTexture:SetAlpha(0)
+            local radioCheckedTexture = radioBtn:GetCheckedTexture()
+            radioCheckedTexture:SetTexture(nil)
+            radioCheckedTexture:SetAlpha(0)
 
-        radioBtn:SetPoint("TOPLEFT", frame, "TOPLEFT", (10 + (i - 1) * roleSpaceValue), -2)
-        radioBtn:SetChecked(ConROCRogueSpells[roleData.role])
+            radioBtn:SetPoint("TOPLEFT", frame, "TOPLEFT", (10 + (i - 1) * roleSpaceValue), -2)
+            radioBtn:SetChecked(ConROCRogueSpells[roleData.role])
 
-        local checkedTexture = radioBtn:CreateTexture(nil, "ARTWORK")
-        checkedTexture:SetTexture(roleData.activeTexture)
-        checkedTexture:SetBlendMode("BLEND")
-        checkedTexture:SetSize(roleIconSize, roleIconSize)
-        checkedTexture:SetPoint("CENTER", radioBtn, "CENTER", 0, 0)
-        radioBtn:SetCheckedTexture(checkedTexture)
+            local checkedTexture = radioBtn:CreateTexture(nil, "ARTWORK")
+            checkedTexture:SetTexture(roleData.activeTexture)
+            checkedTexture:SetBlendMode("BLEND")
+            checkedTexture:SetSize(roleIconSize, roleIconSize)
+            checkedTexture:SetPoint("CENTER", radioBtn, "CENTER", 0, 0)
+            radioBtn:SetCheckedTexture(checkedTexture)
 
-        local uncheckedTexture = radioBtn:CreateTexture(nil, "ARTWORK")
-        uncheckedTexture:SetTexture(roleData.disabledTexture)
-        uncheckedTexture:SetBlendMode("BLEND")
-        uncheckedTexture:SetSize(roleIconSize, roleIconSize)
-        uncheckedTexture:SetPoint("CENTER", radioBtn, "CENTER", 0, 0)
-        radioBtn:SetNormalTexture(uncheckedTexture)
+            local uncheckedTexture = radioBtn:CreateTexture(nil, "ARTWORK")
+            uncheckedTexture:SetTexture(roleData.disabledTexture)
+            uncheckedTexture:SetBlendMode("BLEND")
+            uncheckedTexture:SetSize(roleIconSize, roleIconSize)
+            uncheckedTexture:SetPoint("CENTER", radioBtn, "CENTER", 0, 0)
+            radioBtn:SetNormalTexture(uncheckedTexture)
 
-        radioBtn:SetScript("OnClick", function(self)
-            ConROC:setRole(self, roleData, radioButtons)
-            ConROC:RoleProfile()
-        end)
+            radioBtn:SetScript("OnClick", function(self)
+                ConROC:setRole(self, roleData, radioButtons)
+                ConROC:RoleProfile()
+            end)
 
-        local radioText = radioBtn:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-        radioText:SetText(roleData.frameName)
-        radioText:SetPoint("BOTTOM", radioBtn, "TOP", 0, -5)
-        radioBtn.role = roleData.role
-        table.insert(radioButtons, radioBtn)
+            local radioText = radioBtn:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            radioText:SetText(roleData.frameName)
+            radioText:SetPoint("BOTTOM", radioBtn, "TOP", 0, -5)
+            radioBtn.role = roleData.role
+            table.insert(radioButtons, radioBtn)
+        end
     end
 end
 
@@ -400,7 +403,7 @@ function ConROC_OptionsWindow(_table, _roles)
                 if _table[i].groupType == "radioButtons" then
                     ConROC:OptionRadioButtonSpell(_spellData, i, j, _spellFrame, radioButtonsTable);
                 else
-                    ConROC:OptionCheckboxSpell(_spellData, i, j, _spellFrame);                  
+                    ConROC:OptionCheckboxSpell(_spellData, i, j, _spellFrame);
                 end
             elseif _spellData.type == "wand" then
                 ConROC:OptionWand(_spellData, i, j, _spellFrame);
@@ -468,7 +471,6 @@ function ConROC:OptionRadioButtonSpell(_spellData, i, j, _spellFrame, _radioButt
         spellName = _spellData.spellID.name;
         --print("_spellData.spellID.id",_spellData.spellID.id)
         spellTexture = select(5, GetItemInfoInstant(_spellData.spellID.id))
-
     else
         if type(_spellData.spellID) == "number" then
             spellName, _, spellTexture = GetSpellInfo(_spellData.spellID)
@@ -478,7 +480,7 @@ function ConROC:OptionRadioButtonSpell(_spellData, i, j, _spellFrame, _radioButt
     end
     local myFrame = "ConROC_SM_".._spellData.spellCheckbox
     local oItem = CreateFrame("CheckButton", myFrame, _spellFrame, "UIRadioButtonTemplate");
-    local oItemtext = oItem:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall");     
+    local oItemtext = oItem:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall");
     if j == 1 then
         oItem:SetPoint("TOPLEFT", lastFrame, "TOPLEFT", 0, 0);
     else

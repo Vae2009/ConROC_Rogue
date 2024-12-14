@@ -1,5 +1,5 @@
 ## Title:-|cffFFFFFFConROC|r- |cffFFF569Rogue|r
-## Version: 1.15.10
+## Version: 1.15.11
 ## Author: Vae
 ## Interface: 11505
 ## SavedVariablesPerCharacter: ConROCRogueSpells
