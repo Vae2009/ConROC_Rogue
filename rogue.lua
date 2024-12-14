@@ -1,16 +1,6 @@
-local printTalentsMode = false
-
--- Slash command for printing talent tree with talent names and ID numbers
-SLASH_CONROCPRINTTALENTS1 = "/ConROCPT"
-SlashCmdList["CONROCPRINTTALENTS"] = function()
-    printTalentsMode = not printTalentsMode
-    ConROC:PopulateTalentIDs()
-end
-
 ConROC.Rogue = {}
 
 local ConROC_Rogue, ids = ...;
-local optionMaxIds = ...;
 local _tickerVar = 10;
 local _mhP = nil;
 local _ohP = nil;
@@ -20,7 +10,15 @@ local _mhAlpha = 1;
 local _ohAlpha = 1;
 local currentSpecName;
 local currentSpecID;
-local plvl = UnitLevel("player")
+
+function ConROC:EnableRotationModule()
+    self.Description = "Rogue"
+    self.NextSpell = ConROC.Rogue.Damage
+
+    self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
+    self:RegisterEvent("PLAYER_TALENT_UPDATE");
+    self.lastSpellId = 0
+end
 
 function ConROC:EnableDefenseModule()
     self.NextDef = ConROC.Rogue.Defense
@@ -31,28 +29,7 @@ function ConROC:UNIT_SPELLCAST_SUCCEEDED(event, unitID, lineID, spellID)
     end
 end
 
-function ConROC:PopulateTalentIDs()
-    local numTabs = GetNumTalentTabs()
-    
-    for tabIndex = 1, numTabs do
-        local tabName = GetTalentTabInfo(tabIndex)
-        tabName = string.gsub(tabName, "[^%w]", "") .. "_Talent" -- Remove spaces from tab name
-        print("ids."..tabName.." = {")
-        local numTalents = GetNumTalents(tabIndex)
-
-        for talentIndex = 1, numTalents do
-            local name, _, _, _, _ = GetTalentInfo(tabIndex, talentIndex)
-
-            if name then
-                local talentID = string.gsub(name, "[^%w]", "") -- Remove spaces from talent name
-                    print(talentID .." = ", talentIndex ..",")
-            end
-        end
-        print("}")
-    end
-end
-
-local Racial, Spec, Ass_Ability, Ass_Talent, Com_Ability, Com_Talent, Sub_Ability, Sub_Talent, Poisons, Player_Buff, Player_Debuff, Target_Debuff = ids.Racial, ids.Spec, ids.Ass_Ability, ids.Assassination_Talent, ids.Com_Ability, ids.Combat_Talent, ids.Sub_Ability, ids.Subtlety_Talent, ids.Poisons, ids.Player_Buff, ids.Player_Debuff, ids.Target_Debuff
+local Racial, Spec, Ability, Poisons, Rank, Ass_Talent, Com_Talent, Sub_Talent, Runes, Buff, Debuff = ids.Racial, ids.Spec, ids.Ability, ids.Poisons, ids.Rank, ids.Assassination_Talent, ids.Combat_Talent, ids.Subtlety_Talent, ids.Runes, ids.Buff, ids.Debuff;
 
 function ConROC:SpecUpdate()
     currentSpecName = ConROC:currentSpec()
@@ -63,304 +40,147 @@ function ConROC:SpecUpdate()
        ConROC:Print(self.Colors.Error .. "You do not currently have a spec.")
     end
 end
+
 ConROC:SpecUpdate()
---Ranks
---Assassination
-local _Ambush = Ass_Ability.AmbushRank1
-local _Eviscerate = Ass_Ability.EviscerateRank1
-local _ExposeArmor = Ass_Ability.ExposeArmorRank1
-local _Garrote = Ass_Ability.GarroteRank1
-local _KidneyShot = Ass_Ability.KidneyShotRank1
-local _Rupture = Ass_Ability.RuptureRank1
-local _SliceandDice = Ass_Ability.SliceandDiceRank1
-local _CheapShot = Ass_Ability.CheapShot
---Combat
-local _Backstab = Com_Ability.BackstabRank1
-local _BladeFlurry = Com_Ability.BladeFlurry
-local _Evasion = Com_Ability.Evasion
-local _Feint = Com_Ability.FeintRank1
-local _Gouge = Com_Ability.GougeRank1
-local _Kick = Com_Ability.KickRank1
-local _SinisterStrike = Com_Ability.SinisterStrikeRank1
-local _Sprint = Com_Ability.SprintRank1
---Subtley
-local _GhostlyStrike = Sub_Ability.GhostlyStrike
-local _Hemorrhage = Sub_Ability.HemorrhageRank1
-local _Sap = Sub_Ability.SapRank1
-local _Stealth = Sub_Ability.StealthRank1
-local _Vanish = Sub_Ability.VanishRank1
-local _Blind = Sub_Ability.Blind
---Poisons
-local _InstantPoison = Poisons.InstantPoisonRank1
-local _CripplingPoison = Poisons.CripplingPoisonRank1
-local _DeadlyPoison = Poisons.DeadlyPoisonRank1
-local _MindnumbingPoison = Poisons.MindnumbingPoisonRank1
-local _WoundPoison = Poisons.WoundPoisonRank1
---Runes
-local _Shadowstrike = ids.Runes.Shadowstrike
-local _SaberSlash = ids.Runes.SaberSlash
-local _Envenom = ids.Runes.Envenom
-local _Mutilate = ids.Runes.Mutilate
-local _Tease = ids.Runes.Tease
-local _QuickDraw = ids.Runes.QuickDraw
-local _MainGauche = ids.Runes.MainGauche
-local _BladeDance = ids.Runes.BladeDance
 
-function ConROC:UpdateSpellID()
---Ranks
-if IsSpellKnown(Ass_Ability.AmbushRank6) then _Ambush = Ass_Ability.AmbushRank6
-elseif IsSpellKnown(Ass_Ability.AmbushRank5) then _Ambush = Ass_Ability.AmbushRank5
-elseif IsSpellKnown(Ass_Ability.AmbushRank4) then _Ambush = Ass_Ability.AmbushRank4
-elseif IsSpellKnown(Ass_Ability.AmbushRank3) then _Ambush = Ass_Ability.AmbushRank3
-elseif IsSpellKnown(Ass_Ability.AmbushRank2) then _Ambush = Ass_Ability.AmbushRank2 end
-
-if IsSpellKnown(Ass_Ability.EviscerateRank8) then _Eviscerate = Ass_Ability.EviscerateRank8
-elseif IsSpellKnown(Ass_Ability.EviscerateRank7) then _Eviscerate = Ass_Ability.EviscerateRank7
-elseif IsSpellKnown(Ass_Ability.EviscerateRank6) then _Eviscerate = Ass_Ability.EviscerateRank6
-elseif IsSpellKnown(Ass_Ability.EviscerateRank5) then _Eviscerate = Ass_Ability.EviscerateRank5
-elseif IsSpellKnown(Ass_Ability.EviscerateRank4) then _Eviscerate = Ass_Ability.EviscerateRank4
-elseif IsSpellKnown(Ass_Ability.EviscerateRank3) then _Eviscerate = Ass_Ability.EviscerateRank3
-elseif IsSpellKnown(Ass_Ability.EviscerateRank2) then _Eviscerate = Ass_Ability.EviscerateRank2 end
-
-if IsSpellKnown(Ass_Ability.ExposeArmorRank5) then _ExposeArmor = Ass_Ability.ExposeArmorRank5;
-elseif IsSpellKnown(Ass_Ability.ExposeArmorRank4) then _ExposeArmor = Ass_Ability.ExposeArmorRank4;
-elseif IsSpellKnown(Ass_Ability.ExposeArmorRank3) then _ExposeArmor = Ass_Ability.ExposeArmorRank3;
-elseif IsSpellKnown(Ass_Ability.ExposeArmorRank2) then _ExposeArmor = Ass_Ability.ExposeArmorRank2; end
-
-if IsSpellKnown(Ass_Ability.GarroteRank6) then _Garrote = Ass_Ability.GarroteRank6
-elseif IsSpellKnown(Ass_Ability.GarroteRank5) then _Garrote = Ass_Ability.GarroteRank5
-elseif IsSpellKnown(Ass_Ability.GarroteRank4) then _Garrote = Ass_Ability.GarroteRank4
-elseif IsSpellKnown(Ass_Ability.GarroteRank3) then _Garrote = Ass_Ability.GarroteRank3
-elseif IsSpellKnown(Ass_Ability.GarroteRank2) then _Garrote = Ass_Ability.GarroteRank2 end
-
-if IsSpellKnown(Ass_Ability.KidneyShotRank2) then _KidneyShot = Ass_Ability.KidneyShotRank2 end
-
-if IsSpellKnown(Ass_Ability.RuptureRank6) then _Rupture = Ass_Ability.RuptureRank6
-elseif IsSpellKnown(Ass_Ability.RuptureRank5) then _Rupture = Ass_Ability.RuptureRank5
-elseif IsSpellKnown(Ass_Ability.RuptureRank4) then _Rupture = Ass_Ability.RuptureRank4
-elseif IsSpellKnown(Ass_Ability.RuptureRank3) then _Rupture = Ass_Ability.RuptureRank3
-elseif IsSpellKnown(Ass_Ability.RuptureRank2) then _Rupture = Ass_Ability.RuptureRank2 end
-
-if IsSpellKnown(Ass_Ability.SliceandDiceRank2) then _SliceandDice = Ass_Ability.SliceandDiceRank2 end
-
-if IsSpellKnown(Com_Ability.BackstabRank8) then _Backstab = Com_Ability.BackstabRank8
-elseif IsSpellKnown(Com_Ability.BackstabRank7) then _Backstab = Com_Ability.BackstabRank7
-elseif IsSpellKnown(Com_Ability.BackstabRank6) then _Backstab = Com_Ability.BackstabRank6
-elseif IsSpellKnown(Com_Ability.BackstabRank5) then _Backstab = Com_Ability.BackstabRank5
-elseif IsSpellKnown(Com_Ability.BackstabRank4) then _Backstab = Com_Ability.BackstabRank4
-elseif IsSpellKnown(Com_Ability.BackstabRank3) then _Backstab = Com_Ability.BackstabRank3
-elseif IsSpellKnown(Com_Ability.BackstabRank2) then _Backstab = Com_Ability.BackstabRank2 end
-
-if IsSpellKnown(Com_Ability.FeintRank4) then _Feint = Com_Ability.FeintRank4
-elseif IsSpellKnown(Com_Ability.FeintRank3) then _Feint = Com_Ability.FeintRank3
-elseif IsSpellKnown(Com_Ability.FeintRank2) then _Feint = Com_Ability.FeintRank2 end
-
-if IsSpellKnown(Com_Ability.GougeRank5) then _Gouge = Com_Ability.GougeRank5;
-elseif IsSpellKnown(Com_Ability.GougeRank4) then _Gouge = Com_Ability.GougeRank4;
-elseif IsSpellKnown(Com_Ability.GougeRank3) then _Gouge = Com_Ability.GougeRank3;
-elseif IsSpellKnown(Com_Ability.GougeRank2) then _Gouge = Com_Ability.GougeRank2; end
-
-if IsSpellKnown(Com_Ability.KickRank4) then _Kick = Com_Ability.KickRank4;
-elseif IsSpellKnown(Com_Ability.KickRank3) then _Kick = Com_Ability.KickRank3;
-elseif IsSpellKnown(Com_Ability.KickRank2) then _Kick = Com_Ability.KickRank2; end
-
-if IsSpellKnown(Com_Ability.SinisterStrikeRank8) then _SinisterStrike = Com_Ability.SinisterStrikeRank8
-elseif IsSpellKnown(Com_Ability.SinisterStrikeRank7) then _SinisterStrike = Com_Ability.SinisterStrikeRank7
-elseif IsSpellKnown(Com_Ability.SinisterStrikeRank6) then _SinisterStrike = Com_Ability.SinisterStrikeRank6
-elseif IsSpellKnown(Com_Ability.SinisterStrikeRank5) then _SinisterStrike = Com_Ability.SinisterStrikeRank5
-elseif IsSpellKnown(Com_Ability.SinisterStrikeRank4) then _SinisterStrike = Com_Ability.SinisterStrikeRank4
-elseif IsSpellKnown(Com_Ability.SinisterStrikeRank3) then _SinisterStrike = Com_Ability.SinisterStrikeRank3
-elseif IsSpellKnown(Com_Ability.SinisterStrikeRank2) then _SinisterStrike = Com_Ability.SinisterStrikeRank2 end
-
-if IsSpellKnown(Com_Ability.SprintRank3) then _Sprint = Com_Ability.SprintRank3
-elseif IsSpellKnown(Com_Ability.SprintRank2) then _Sprint = Com_Ability.SprintRank2 end
-
-if IsSpellKnown(Sub_Ability.HemorrhageRank3) then _Hemorrhage = Sub_Ability.HemorrhageRank3
-elseif IsSpellKnown(Sub_Ability.HemorrhageRank2) then _Hemorrhage = Sub_Ability.HemorrhageRank2 end
-
-if IsSpellKnown(Sub_Ability.SapRank3) then _Sap = Sub_Ability.SapRank3
-elseif IsSpellKnown(Sub_Ability.SapRank2) then _Sap = Sub_Ability.SapRank2 end
-
-if IsSpellKnown(Sub_Ability.VanishRank2) then _Vanish = Sub_Ability.VanishRank2 end
-
-if plvl >= 50 then
-    _CripplingPoison = Poisons.CripplingPoisonRank2
-end
-
-if plvl >= 54 then
-    _DeadlyPoison = Poisons.DeadlyPoisonRank4
-elseif plvl >= 46 then
-    _DeadlyPoison = Poisons.DeadlyPoisonRank3
-elseif plvl >= 38 then
-    _DeadlyPoison = Poisons.DeadlyPoisonRank2
-end
-
-if plvl >= 60 then
-    _InstantPoison = Poisons.InstantPoisonRank6
-elseif plvl >= 52 then
-    _InstantPoison = Poisons.InstantPoisonRank5
-elseif plvl >= 44 then
-    _InstantPoison = Poisons.InstantPoisonRank4
-elseif plvl >= 36 then
-    _InstantPoison = Poisons.InstantPoisonRank3
-elseif plvl >= 28 then
-    _InstantPoison = Poisons.InstantPoisonRank2
-end
-
-if plvl >= 52 then
-    _MindnumbingPoison = Poisons.MindnumbingPoisonRank3
-elseif plvl >= 38 then
-    _MindnumbingPoison = Poisons.MindnumbingPoisonRank2
-end
-
-if plvl >= 56 then
-    _WoundPoison = Poisons.WoundPoisonRank4
-elseif plvl >= 48 then
-    _WoundPoison = Poisons.WoundPoisonRank3
-elseif plvl >= 40 then
-    _WoundPoison = Poisons.WoundPoisonRank2
-end
-
---OptionIDs defaults
-ids.optionMaxIds = {
-    InstantPoison = _InstantPoison,
-    CripplingPoison = _CripplingPoison,
-    DeadlyPoison = _DeadlyPoison,
-    MindnumbingPoison = _MindnumbingPoison,
-    WoundPoison = _WoundPoison,
-    SliceandDice = _SliceandDice,
-    Garrote = _Garrote,
-    ExposeArmor = _ExposeArmor,
-    Rupture = _Rupture,
-    GhostlyStrike = _GhostlyStrike,
-    Hemorrhage = _Hemorrhage,
-    BladeFlurry = _BladeFlurry,
-    Gouge = _Gouge,
-    CheapShot = _CheapShot,
-    KidneyShot = _KidneyShot,
-    Blind = _Blind
-}
-end
 ConROC:UpdateSpellID()
 
-function ConROC:EnableRotationModule()
-    self.Description = "Rogue"
-    self.NextSpell = ConROC.Rogue.Damage
 
-    self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
-    self:RegisterEvent("PLAYER_TALENT_UPDATE");
-    self.lastSpellId = 0
-
-    ConROC:SpellmenuClass()
-    --  ConROCSpellmenuFrame:Hide();
-end
 
 function ConROC:PLAYER_TALENT_UPDATE()
     ConROC:SpecUpdate();
     ConROC:closeSpellmenu();
 end
 
+--Info
+local _Player_Level = UnitLevel("player");
+local _Player_Percent_Health = ConROC:PercentHealth('player');
+local _is_PvP = ConROC:IsPvP();
+local _in_combat = UnitAffectingCombat('player');
+local _party_size = GetNumGroupMembers();
+local _is_PC = UnitPlayerControlled("target");
+local _is_Enemy = ConROC:TarHostile();
+local _Target_Health = UnitHealth('target');
+local _Target_Percent_Health = ConROC:PercentHealth('target');
+
+--Resources
+local _Combo, _Combo_Max = ConROC:PlayerPower('Combo');
+local _Energy, _Energy_Max = ConROC:PlayerPower('Energy');
+
+--Conditions
+local _Queue = 0;
+local _is_stealthed = IsStealthed();
+local _is_moving = ConROC:PlayerSpeed();
+local _enemies_in_melee, _target_in_melee = ConROC:Targets("Melee");
+local _enemies_in_10yrds, _target_in_10yrds = ConROC:Targets("10");
+local _enemies_in_20yrds, _target_in_20yrds = ConROC:Targets("20");
+local _enemies_in_40yrds, _target_in_40yrds = ConROC:Targets("40");
+local _can_Execute = _Target_Percent_Health < 20;
+
+--Racials
+local _Berserking, _Berserking_RDY = _, _;
+
+function ConROC:Stats()
+	_Player_Level = UnitLevel("player");
+	_Player_Percent_Health = ConROC:PercentHealth('player');
+	_is_PvP = ConROC:IsPvP();
+	_in_combat = UnitAffectingCombat('player');
+	_party_size = GetNumGroupMembers();
+	_is_PC = UnitPlayerControlled("target");
+	_is_Enemy = ConROC:TarHostile();
+	_Target_Health = UnitHealth('target');
+	_Target_Percent_Health = ConROC:PercentHealth('target');
+
+	_Combo, _Combo_Max = ConROC:PlayerPower('Combo');
+	_Energy, _Energy_Max, _Energy_PERCENT = ConROC:PlayerPower('Energy');
+
+	_Queue = 0;
+    _is_stealthed = IsStealthed();
+	_is_moving = ConROC:PlayerSpeed();
+	_enemies_in_melee, _target_in_melee = ConROC:Targets("Melee");
+	_enemies_in_10yrds, _target_in_10yrds = ConROC:Targets("10");
+	_enemies_in_20yrds, _target_in_20yrds = ConROC:Targets("20");
+	_enemies_in_40yrds, _target_in_40yrds = ConROC:Targets("40");
+	_can_Execute = _Target_Percent_Health < 20;
+
+	_Berserking, _Berserking_RDY = ConROC:AbilityReady(Racial.Berserking, timeShift);
+end
+
 function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
-ConROC:UpdateSpellID()
-    --Character
-    plvl = UnitLevel("player")
+	ConROC:UpdateSpellID();
+	ConROC:Stats();
 
-    --Racials
+--Abilities
+    local _Ambush, _Ambush_RDY = ConROC:AbilityReady(Ability.Ambush, timeShift);
+    local _CheapShot, _CheapShot_RDY = ConROC:AbilityReady(Ability.CheapShot, timeShift);
+    local _KidneyShot, _KidneyShot_RDY = ConROC:AbilityReady(Ability.KidneyShot, timeShift);
+    local _Eviscerate, _Eviscerate_RDY = ConROC:AbilityReady(Ability.Eviscerate, timeShift);
+    local _ColdBlood, _ColdBlood_RDY = ConROC:AbilityReady(Ability.ColdBlood, timeShift);
+        local _ColdBlood_BUFF = ConROC:Aura(_ColdBlood, timeShift);
+    local _ExposeArmor, _ExposeArmor_BUFF = ConROC:AbilityReady(Ability.ExposeArmor, timeShift);
+        local _ExposeArmor_DEBUFF = ConROC:TargetAura(_ExposeArmor, timeShift);
+    local _Garrote, _Garrote_RDY = ConROC:AbilityReady(Ability.Garrote, timeShift);
+        local _Garrote_DEBUFF, _, _Garrote_DUR = ConROC:TargetAura(_Garrote, timeShift);
+    local _Rupture, _Rupture_RDY = ConROC:AbilityReady(Ability.Rupture, timeShift);
+        local _Rupture_DEBUFF, _, _Rupture_DUR = ConROC:TargetAura(_Rupture, timeShift);
+    local _SliceandDice, _SliceandDice_RDY = ConROC:AbilityReady(Ability.SliceandDice, timeShift);
+        local _SliceandDice_BUFF, _, _SliceandDice_DUR = ConROC:Aura(_SliceandDice, timeShift);
+    local _AdrenalineRush, _AdrenalineRush_DUR = ConROC:AbilityReady(Ability.AdrenalineRush, timeShift);
+        local _AdrenalineRush_BUFF = ConROC:Aura(_AdrenalineRush, timeShift);
+    local _Backstab, _Backstab_RDY = ConROC:AbilityReady(Ability.Backstab, timeShift);
+    local _BladeFlurry, _BladeFlurry_RDY = ConROC:AbilityReady(Ability.BladeFlurry, timeShift);
+    local _Gouge, _Gouge_RDY = ConROC:AbilityReady(Ability.Gouge, timeShift);
+    local _Kick, _Kick_RDY = ConROC:AbilityReady(Ability.Kick, timeShift);
+    local _SinisterStrike, _SinisterStrike_RDY = ConROC:AbilityReady(Ability.SinisterStrike, timeShift);
+    local _Sprint, _Sprint_RDY = ConROC:AbilityReady(Ability.Sprint, timeShift);
+    local _GhostlyStrike, _GhostlyStrike_RDY = ConROC:AbilityReady(Ability.GhostlyStrike, timeShift);
+    local _Hemorrhage, _Hemorrhage_RDY = ConROC:AbilityReady(Ability.Hemorrhage, timeShift);
+        local _Hemorrhage_DEBUFF = ConROC:TargetAura(_Hemorrhage, timeShift);
+    local _Premeditation, _Premeditation_RDY = ConROC:AbilityReady(Ability.Premeditation, timeShift);
+    local _Preparation, _Preparation_RDY = ConROC:AbilityReady(Ability.Preparation, timeShift);
+    local _Vanish, _Vanish_RDY = ConROC:AbilityReady(Ability.Vanish, timeShift);
+    local _Riposte, _Riposte_RDY = ConROC:AbilityReady(Ability.Riposte, timeShift);
+    local _Blind, _Blind_RDY = ConROC:AbilityReady(Ability.Blind, timeShift);
+ --Runes
+    local _Shadowstrike, _Shadowstrike_RDY = ConROC:AbilityReady(Runes.Shadowstrike, timeShift);
+    local _SaberSlash, _SaberSlash_RDY = ConROC:AbilityReady(Runes.SaberSlash, timeShift);
+    local _SaberSlash_DEBUFF = ConROC:TargetAura(_SaberSlash, timeShift);
+    local _Mutilate, _Mutilate_RDY = ConROC:AbilityReady(Runes.Mutilate, timeShift);
+    local _Envenom, _Envenom_RDY = ConROC:AbilityReady(Runes.Envenom, timeShift);
+    local _Tease, _Tease_RDY = ConROC:AbilityReady(Runes.Tease, timeShift);
+    local _QuickDraw, _QuickDraw_RDY = ConROC:AbilityReady(Runes.QuickDraw, timeShift);
+    local _MainGauche, _MainGauche_RDY = ConROC:AbilityReady(Runes.MainGauche, timeShift);
+        local _MainGauche_BUFF = ConROC:Aura(_MainGauche, timeShift);
+    local _BladeDance, _BladeDance_RDY = ConROC:AbilityReady(Runes.BladeDance, timeShift);
+        local _BladeDance_BUFF = ConROC:Aura(_BladeDance, timeShift);
 
-    --Resources
-    local energy = UnitPower("player", Enum.PowerType.Energy)
-    local energyMax = UnitPowerMax("player", Enum.PowerType.Energy)
-    local energyPercent = math.max(0, energy) / math.max(1, energyMax) * 100
-    local combo = UnitPower("player", Enum.PowerType.ComboPoints)
-    local comboMax = UnitPowerMax("player", Enum.PowerType.ComboPoints)
-
-    
---print("ids.optionMaxIds.MindnumbingPoison",ids.optionMaxIds.MindnumbingPoison);
---print("ids.optionMaxIds.MindnumbingPoison.id",ids.optionMaxIds.MindnumbingPoison.id);
---print("ids.optionMaxIds.MindnumbingPoison.name",ids.optionMaxIds.MindnumbingPoison.name);
-    --Abilities
-    local ambushRDY = ConROC:AbilityReady(_Ambush, timeShift);
-    local cShotRDY = ConROC:AbilityReady(Ass_Ability.CheapShot, timeShift);
-    local kShotRDY = ConROC:AbilityReady(_KidneyShot, timeShift);
-    local evisRDY = ConROC:AbilityReady(_Eviscerate, timeShift);
-    local cBloodRDY = ConROC:AbilityReady(Ass_Ability.ColdBlood, timeShift);
-    local cBloodBUFF = ConROC:Buff(Ass_Ability.ColdBlood, timeShift);
-    local exArmorRDY = ConROC:AbilityReady(_ExposeArmor, timeShift);
-    local exArmorDEBUFF = ConROC:TargetDebuff(_ExposeArmor, timeShift);
-    local garRDY = ConROC:AbilityReady(_Garrote, timeShift);
-    local garDEBUFF, _, garDUR = ConROC:TargetDebuff(_Garrote, timeShift);
-    local rupRDY = ConROC:AbilityReady(_Rupture, timeShift);
-    local rupDEBUFF, _, rupDUR = ConROC:TargetDebuff(_Rupture, timeShift);
-    local sndRDY = ConROC:AbilityReady(_SliceandDice, timeShift);
-    local sndBUFF, _, sndDUR = ConROC:Buff(_SliceandDice, timeShift);
-    local aRushRDY = ConROC:AbilityReady(Com_Ability.AdrenalineRush, timeShift);
-    local aRushBUFF = ConROC:Buff(Com_Ability.AdrenalineRush, timeShift);
-    local bStabRDY = ConROC:AbilityReady(_Backstab, timeShift);
-    local bFlurryRDY = ConROC:AbilityReady(_BladeFlurry, timeShift);
-    local gougeRDY = ConROC:AbilityReady(_Gouge, timeShift);
-    local kickRDY = ConROC:AbilityReady(_Kick, timeShift);
-    local sStrikeRDY = ConROC:AbilityReady(_SinisterStrike, timeShift);
-    local sprintRDY = ConROC:AbilityReady(_Sprint, timeShift);
-    local gStrikeRDY = ConROC:AbilityReady(_GhostlyStrike, timeShift);
-    local hemoRDY = ConROC:AbilityReady(_Hemorrhage, timeShift);
-    local hemoDEBUFF = ConROC:TargetDebuff(_Hemorrhage, timeShift);
-    local premRDY = ConROC:AbilityReady(Sub_Ability.Premeditation, timeShift);
-    local prepRDY = ConROC:AbilityReady(Sub_Ability.Preparation, timeShift);
-    local vanishRDY = ConROC:AbilityReady(_Vanish, timeShift);
-    local ripRDY = ConROC:AbilityReady(Com_Ability.Riposte, timeShift);
-    local blindRDY = ConROC:AbilityReady(Sub_Ability.Blind, timeShift);
-    --Runes
-    local ShadowstrikeRDY = ConROC:AbilityReady(_Shadowstrike, timeShift);
-    local SaberSlashRDY = ConROC:AbilityReady(_SaberSlash, timeShift);
-    local SaberSlashDEBUFF = ConROC:TargetDebuff(ids.Target_Debuff.SaberSlash, timeShift);
-    local MutilateRDY = ConROC:AbilityReady(_Mutilate, timeShift);
-    local EnvenomRDY = ConROC:AbilityReady(_Envenom, timeShift);
-    local TeaseRDY = ConROC:AbilityReady(_Tease, timeShift);
-    local QuickDrawRDY = ConROC:AbilityReady(_QuickDraw, timeShift);
-    local MainGaucheRDY = ConROC:AbilityReady(_MainGauche, timeShift);
-        local MainGaucheBUFF = ConROC:Buff(_MainGauche, timeShift);
-    local bDanceRDY = ConROC:AbilityReady(_BladeDance, timeShift);
-        local bDanceBUFF = ConROC:Buff(_BladeDance, timeShift);
-
-    --Conditions
-    local incombat = UnitAffectingCombat("player")
-    local stealthed = IsStealthed()
-    local resting = IsResting()
-    local mounted = IsMounted()
-    local targetPh = ConROC:PercentHealth("target")
-    --local inMelee = ConROC:IsMeleeRange()--CheckInteractDistance("target", 3)
-    local inClose = ConROC:IsMeleeRange()
-    local hasDagger = ConROC:Equipped("Daggers", "MAINHANDSLOT")
-    local dualWielding = ConROC:Equipped("wpn", "MAINHANDSLOT") and ConROC:Equipped("wpn", "SECONDARYHANDSLOT")
-    local tarInMelee = ConROC:Targets(_SinisterStrike)
+--Conditions
+    local _Resting = IsResting();
+    local _Mounted = IsMounted();
+    local hasDagger = ConROC:Equipped("Daggers", "MAINHANDSLOT");
+    local dualWielding = ConROC:Equipped("wpn", "MAINHANDSLOT") and ConROC:Equipped("wpn", "SECONDARYHANDSLOT");
     local poisonMH, _, _, _, poisonOH = GetWeaponEnchantInfo()
     local mhExp = 0
     local ohExp = 0
 
-    --Indicators
-    ConROC:AbilityBurst(Com_Ability.AdrenalineRush, aRushRDY and incombat and energyPercent <= 40)
-    ConROC:AbilityBurst(Ass_Ability.ColdBlood, cBloodRDY and ((stealthed and hasDagger) or combo == comboMax))
-    --  ConROC:AbilityBurst(Sub_Ability.Preparation, prepRDY and incombat);
-    ConROC:AbilityBurst(_Gouge, ConROC:CheckBox(ConROC_SM_Stun_Gouge) and gougeRDY and not rupDEBUFF and not garDEBUFF and incombat and ConROC:TarYou())
-    ConROC:AbilityBurst(Sub_Ability.Blind, ConROC:CheckBox(ConROC_SM_Stun_Blind) and blindRDY and not rupDEBUFF and not garDEBUFF and incombat and ConROC:TarYou())
+ --Indicators
+    ConROC:AbilityBurst(_AdrenalineRush, _AdrenalineRush_DUR and _in_combat and _Energy_PERCENT <= 40)
+    ConROC:AbilityBurst(_ColdBlood, _ColdBlood_RDY and ((_is_stealthed and hasDagger) or _Combo == _Combo_Max))
+    --  ConROC:AbilityBurst(_Preparation, _Preparation_RDY and _in_combat);
+    ConROC:AbilityBurst(_Gouge, ConROC:CheckBox(ConROC_SM_Stun_Gouge) and _Gouge_RDY and not _Rupture_DEBUFF and not _Garrote_DEBUFF and _in_combat and ConROC:TarYou())
+    ConROC:AbilityBurst(_Blind, ConROC:CheckBox(ConROC_SM_Stun_Blind) and _Blind_RDY and not _Rupture_DEBUFF and not _Garrote_DEBUFF and _in_combat and ConROC:TarYou())
 
-    ConROC:AbilityInterrupt(_Kick, ConROC:Interrupt() and kickRDY)
+    ConROC:AbilityInterrupt(_Kick, ConROC:Interrupt() and _Kick_RDY)
 
-    --Warnings
+--Warnings
     _tickerVar = _tickerVar + 1
-    local hasMainHandEnchant,
-        mainHandExpiration,
-        mainHandCharges,
-        mainHandEnchantID,
-        hasOffHandEnchant,
-        offHandExpiration,
-        offHandCharges,
-        offHandEnchantId = GetWeaponEnchantInfo()
+    local hasMainHandEnchant, mainHandExpiration, mainHandCharges,  mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantId = GetWeaponEnchantInfo()
     if mainHandExpiration then
         mhExp = mainHandExpiration / 1000
     else
         mhExp = 0
     end
+
     if offHandExpiration then
         ohExp = offHandExpiration / 1000
     else
@@ -368,7 +188,7 @@ ConROC:UpdateSpellID()
     end
 
     if _tickerVar >= 1 then
-        if not mounted and (not resting or stealthed) then
+        if not _Mounted and (not _Resting or _is_stealthed) then
             if ConROC:CheckBox(ConROC_SM_PoisonMH_Instant) then
                 if ids.ActivePoison[mainHandEnchantID] == ids.optionMaxIds.InstantPoison.name then
                     _mhAlpha = .5
@@ -558,7 +378,7 @@ ConROC:UpdateSpellID()
             (ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax or ids.ActivePoison[offHandEnchantId] ~= _ohNameMax) and
                 (_mhP ~= "none" or _ohP ~= "none")
          then
-            if not (resting or incombat or mounted) then
+            if not (_Resting or _in_combat or _Mounted) then
                 --print("showing apply poison")
                 ConROC:ApplyPoison(_mhP, _ohP)
                 if not ConROCApplyPoisonFrame:IsShown() then
@@ -566,9 +386,10 @@ ConROC:UpdateSpellID()
                 end
             end
         end
+
         if ConROCApplyPoisonFrame:IsShown() then
             if
-                (resting or mounted and not incombat) or (_mhP == "none" and _ohP == "none") or
+                (_Resting or _Mounted and not _in_combat) or (_mhP == "none" and _ohP == "none") or
                     (ids.ActivePoison[mainHandEnchantID] == _mhNameMax and
                         ids.ActivePoison[offHandEnchantId] == _ohNameMax) or
                     (ids.ActivePoison[mainHandEnchantID] == _mhNameMax and _ohP == "none") or
@@ -579,341 +400,363 @@ ConROC:UpdateSpellID()
         end
     end
 
-    --Rotations
+--Rotations
     if ConROC.Seasons.IsSoD then --DPS rotation for SoD
     --print("IsSpellKnown - Slaugther from the shadows)",IsSpellKnownOrOverridesKnown(424925))
         if ConROC:CheckBox(ConROC_SM_Role_Tank) then
-            if stealthed then
-                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and inClose == 1 and garRDY and not garDEBUFF then
+            if _is_stealthed then
+                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _target_in_melee and _Garrote_RDY and not _Garrote_DEBUFF then
                     return _Garrote;
                 end
-                if ambushRDY and hasDagger then
+
+                if _Ambush_RDY and hasDagger then
                     return _Ambush;
                 end
-                if bStabRDY and hasDagger and not ConROC:TarYou() then
+
+                if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
                     return _Backstab;
                 end
-                if ShadowstrikeRDY and inClose ~= 1 and not (ambushRDY and bStabRDY) then
+
+                if _Shadowstrike_RDY and not _target_in_melee and not (_Ambush_RDY and _Backstab_RDY) then
                     return _Shadowstrike
                 end
-                return nil;
+            return nil;
             else
-                if ripRDY then
-                    return Com_Ability.Riposte;
+                if _Riposte_RDY then
+                    return _Riposte;
                 end
-                if MainGaucheRDY and not MainGaucheBUFF then
+
+                if _MainGauche_RDY and not _MainGauche_BUFF then
                     return _MainGauche;
                 end
-                if sStrikeRDY and (combo < 1) then
+
+                if _SinisterStrike_RDY and (_Combo < 1) then
                     return _SinisterStrike;
                 end
-                if bDanceRDY and not bDanceBUFF then
+
+                if _BladeDance_RDY and not _BladeDance_BUFF then
                     return _BladeDance;
                 end
-                if sStrikeRDY and not combo ~= comboMax then
+
+                if _SinisterStrike_RDY and not _Combo ~= _Combo_Max then
                     return _SinisterStrike;
                 end
-                if bDanceRDY and not bDanceBUFF then
+
+                if _BladeDance_RDY and not _BladeDance_BUFF then
                     return _BladeDance;
                 end
-                if sndRDY and not sndBUFF then
+
+                if _SliceandDice_RDY and not _SliceandDice_BUFF then
                     return _SliceandDice
                 end
             end
-            return nil
+        return nil
         end
-        if plvl < 10 or not currentSpecID then
-            if stealthed then
-                if ShadowstrikeRDY and inClose ~= 1 and not (ambushRDY and bStabRDY) then
+        if _Player_Level < 10 or not currentSpecID then
+            if _is_stealthed then
+                if _Shadowstrike_RDY and not _target_in_melee and not (_Ambush_RDY and _Backstab_RDY) then
                     return _Shadowstrike
                 end
-                if premRDY then
-                    return Sub_Ability.Premeditation;
+
+                if _Premeditation_RDY then
+                    return _Premeditation;
                 end
 
-                if ConROC:CheckBox(ConROC_SM_Stun_CheapShot) and cShotRDY and not cBloodBUFF then
-                    return Ass_Ability.CheapShot;
+                if ConROC:CheckBox(ConROC_SM_Stun_CheapShot) and _CheapShot_RDY and not _ColdBlood_BUFF then
+                    return _CheapShot;
                 end
-                
-                if ambushRDY and hasDagger then
+
+                if _Ambush_RDY and hasDagger then
                     return _Ambush;
                 end
-                
-                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and garRDY and not garDEBUFF then
+
+                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _Garrote_RDY and not _Garrote_DEBUFF then
                     return _Garrote;
                 end
 
-                if bStabRDY and hasDagger and not ConROC:TarYou() then
+                if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
                     return _Backstab;
                 end
-            
-                if sStrikeRDY and not hasDagger then
+
+                if _SinisterStrike_RDY and not hasDagger then
                     return _SinisterStrike;
                 end
             end
 
-            if ripRDY then
-                return Com_Ability.Riposte;
+            if _Riposte_RDY then
+                return _Riposte;
             end
 
-            if SaberSlashRDY and combo ~= comboMax then
+            if _SaberSlash_RDY and _Combo ~= _Combo_Max then
                 return _SaberSlash
             end
-            if MutilateRDY and combo ~= comboMax then
+            if _Mutilate_RDY and _Combo ~= _Combo_Max then
                 return _Mutilate
             end
-            
-            if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
+
+            if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
                 return _SliceandDice;
             end
 
-            if EnvenomRDY and sndBUFF and combo == comboMax then
+            if _Envenom_RDY and _SliceandDice_BUFF and _Combo == _Combo_Max then
                 return _Envenom
             end
 
-            if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and kShotRDY and combo == comboMax then
+            if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and _KidneyShot_RDY and _Combo == _Combo_Max then
                 return _KidneyShot;
             end
-            
-            if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
+
+            if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
                 return _SliceandDice;
             end
-            
-            if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and exArmorRDY and not exArmorDEBUFF and combo == comboMax and targetPh >= 20 then
+
+            if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and _ExposeArmor_BUFF and not _ExposeArmor_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 20 then
                 return _ExposeArmor;
             end
-            
-            if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and rupRDY and not rupDEBUFF and combo == comboMax and targetPh >= 15 then
+
+            if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and _Rupture_RDY and not _Rupture_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 15 then
                 return _Rupture;
             end
-            
-            if bFlurryRDY and tarInMelee >= 2 then
-                return Com_Ability.BladeFlurry;
+
+            if _BladeFlurry_RDY and _enemies_in_melee >= 2 then
+                return _BladeFlurry;
             end
-            
-            if evisRDY and (combo == comboMax or (combo >= 1 and ((targetPh <= 5 and ConROC:Raidmob()) or (targetPh <= 20 and not ConROC:Raidmob())))) then
+
+            if _Eviscerate_RDY and (_Combo == _Combo_Max or (_Combo >= 1 and ((_Target_Percent_Health <= 5 and ConROC:Raidmob()) or (_Target_Percent_Health <= 20 and not ConROC:Raidmob())))) then
                 return _Eviscerate;
             end
-            
-            if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and hemoRDY and not hemoDEBUFF then
+
+            if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and _Hemorrhage_RDY and not _Hemorrhage_DEBUFF then
                 return _Hemorrhage;
             end
-            
-            if bStabRDY and hasDagger and not ConROC:TarYou() and incombat then
+
+            if _Backstab_RDY and hasDagger and not ConROC:TarYou() and _in_combat then
                 return _Backstab;
             end
-            
-            if gStrikeRDY and ConROC:TarYou() then
-                return Sub_Ability.GhostlyStrike;
+
+            if _GhostlyStrike_RDY and ConROC:TarYou() then
+                return _GhostlyStrike;
             end
-            if sStrikeRDY and (not hasDagger or ConROC:TarYou()) then
+
+            if _SinisterStrike_RDY and (not hasDagger or ConROC:TarYou()) then
                 return _SinisterStrike;
             end
-
-            return nil;
+        return nil;
         elseif (currentSpecID == ids.Spec.Assassination) then
-            if stealthed then
-                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and inClose == 1 and garRDY and not garDEBUFF then
+            if _is_stealthed then
+                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _target_in_melee and _Garrote_RDY and not _Garrote_DEBUFF then
                     return _Garrote;
                 end
-                if ambushRDY and hasDagger then
+
+                if _Ambush_RDY and hasDagger then
                     return _Ambush;
                 end
-                if bStabRDY and hasDagger and not ConROC:TarYou() then
+
+                if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
                     return _Backstab;
                 end
-                if ShadowstrikeRDY and inClose ~= 1 and not (ambushRDY and bStabRDY) then
+
+                if _Shadowstrike_RDY and not _target_in_melee and not (_Ambush_RDY and _Backstab_RDY) then
                     return _Shadowstrike
                 end
-                return nil;
+            return nil;
             else
-                if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
+                if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
                     return _SliceandDice;
                 end
-                if SaberSlashRDY and combo ~= comboMax then
+
+                if _SaberSlash_RDY and _Combo ~= _Combo_Max then
                     return _SaberSlash
                 end
-                if MutilateRDY and combo ~= comboMax then
+
+                if _Mutilate_RDY and _Combo ~= _Combo_Max then
                     return _Mutilate
                 end
-                if sStrikeRDY and combo ~= comboMax and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
+
+                if _SinisterStrike_RDY and _Combo ~= _Combo_Max and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
                     return _SinisterStrike;
                 end
-                if EnvenomRDY and sndBUFF and combo == comboMax then
+
+                if _Envenom_RDY and _SliceandDice_BUFF and _Combo == _Combo_Max then
                     return _Envenom
                 end
-                return nil;
+            return nil;
             end
         elseif (currentSpecID == ids.Spec.Combat) then
-            if stealthed then
-                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and inClose == 1 and garRDY and not garDEBUFF then
+            if _is_stealthed then
+                if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _target_in_melee and _Garrote_RDY and not _Garrote_DEBUFF then
                     return _Garrote;
                 end
-                if ambushRDY and hasDagger then
+
+                if _Ambush_RDY and hasDagger then
                     return _Ambush;
                 end
-                if bStabRDY and hasDagger and not ConROC:TarYou() then
+
+                if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
                     return _Backstab;
                 end
-                if ShadowstrikeRDY and inClose ~= 1 and not (ambushRDY and bStabRDY) then
+
+                if _Shadowstrike_RDY and not _target_in_melee and not (_Ambush_RDY and _Backstab_RDY) then
                     return _Shadowstrike
                 end
-                return nil;
+            return nil;
             else
-                if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
+                if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
                     return _SliceandDice;
                 end
-                if SaberSlashRDY and combo ~= comboMax then
+
+                if _SaberSlash_RDY and _Combo ~= _Combo_Max then
                     return _SaberSlash
                 end
-                if MutilateRDY and combo ~= comboMax then
+
+                if _Mutilate_RDY and _Combo ~= _Combo_Max then
                     return _Mutilate
                 end
-                if sStrikeRDY and combo ~= comboMax and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
+
+                if _SinisterStrike_RDY and _Combo ~= _Combo_Max and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
                     return _SinisterStrike;
                 end
-                if EnvenomRDY and sndBUFF and combo == comboMax then
+
+                if _Envenom_RDY and _SliceandDice_BUFF and _Combo == _Combo_Max then
                     return _Envenom
                 end
-                return nil;
+            return nil;
             end
-
         elseif (currentSpecID == ids.Spec.Subtlety) then
-            if stealthed then
-                if ambushRDY and hasDagger then
+            if _is_stealthed then
+                if _Ambush_RDY and hasDagger then
                     return _Ambush;
                 end
-                if bStabRDY and hasDagger and not ConROC:TarYou() then
+
+                if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
                     return _Backstab;
                 end
-                if ShadowstrikeRDY and inClose ~= 1 and not (ambushRDY and bStabRDY) then
+
+                if _Shadowstrike_RDY and not _target_in_melee and not (_Ambush_RDY and _Backstab_RDY) then
                     return _Shadowstrike
                 end
-                return nil;
+            return nil;
             else
-                if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
+                if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
                     return _SliceandDice;
                 end
-                if MutilateRDY and combo ~= comboMax then
+
+                if _Mutilate_RDY and _Combo ~= _Combo_Max then
                     return _Mutilate
                 end
-                if SaberSlashRDY and combo ~= comboMax then
+
+                if _SaberSlash_RDY and _Combo ~= _Combo_Max then
                     return _SaberSlash
                 end
-                if sStrikeRDY and combo ~= comboMax and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
+
+                if _SinisterStrike_RDY and _Combo ~= _Combo_Max and (not (IsSpellKnownOrOverridesKnown(_SaberSlash) or IsSpellKnownOrOverridesKnown(_Mutilate))) then
                     return _SinisterStrike;
                 end
-                if EnvenomRDY and sndBUFF and combo == comboMax then
+
+                if _Envenom_RDY and _SliceandDice_BUFF and _Combo == _Combo_Max then
                     return _Envenom
                 end
-                return nil;
+            return nil;
             end
-
         end
     end
     --if not SoD
-    if stealthed then
-        if premRDY then
-            return Sub_Ability.Premeditation;
+    if _is_stealthed then
+        if _Premeditation_RDY then
+            return _Premeditation;
         end
 
-        if ConROC:CheckBox(ConROC_SM_Stun_CheapShot) and cShotRDY and not cBloodBUFF then
-            return Ass_Ability.CheapShot;
+        if ConROC:CheckBox(ConROC_SM_Stun_CheapShot) and _CheapShot_RDY and not _ColdBlood_BUFF then
+            return _CheapShot;
         end
-        
-        if ambushRDY and hasDagger then
+
+        if _Ambush_RDY and hasDagger then
             return _Ambush;
         end
-        
-        if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and garRDY and not garDEBUFF then
+
+        if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _Garrote_RDY and not _Garrote_DEBUFF then
             return _Garrote;
         end
 
-        if bStabRDY and hasDagger and not ConROC:TarYou() then
+        if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
             return _Backstab;
         end
-    
-        if sStrikeRDY and not hasDagger then
+
+        if _SinisterStrike_RDY and not hasDagger then
             return _SinisterStrike;
         end
     end
-    if ripRDY then
-        return Com_Ability.Riposte;
+
+    if _Riposte_RDY then
+        return _Riposte;
     end
 
-    if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and kShotRDY and combo == comboMax then
+    if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and _KidneyShot_RDY and _Combo == _Combo_Max then
         return _KidneyShot;
     end
-    
-    if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and sndRDY and ((combo >= 1 and not sndBUFF) or (combo == comboMax and ((sndDUR <= 10 and not aRushBUFF) or (aRushBUFF and sndDUR <= 5)))) then
+
+    if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
         return _SliceandDice;
     end
-    
-    if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and exArmorRDY and not exArmorDEBUFF and combo == comboMax and targetPh >= 20 then
+
+    if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and _ExposeArmor_BUFF and not _ExposeArmor_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 20 then
         return _ExposeArmor;
     end
-    
-    if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and rupRDY and not rupDEBUFF and combo == comboMax and targetPh >= 15 then
+
+    if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and _Rupture_RDY and not _Rupture_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 15 then
         return _Rupture;
     end
-    
-    if bFlurryRDY and tarInMelee >= 2 then
-        return Com_Ability.BladeFlurry;
+
+    if _BladeFlurry_RDY and _enemies_in_melee >= 2 then
+        return _BladeFlurry;
     end
-    
-    if evisRDY and (combo == comboMax or (combo >= 1 and ((targetPh <= 5 and ConROC:Raidmob()) or (targetPh <= 20 and not ConROC:Raidmob())))) then
+
+    if _Eviscerate_RDY and (_Combo == _Combo_Max or (_Combo >= 1 and ((_Target_Percent_Health <= 5 and ConROC:Raidmob()) or (_Target_Percent_Health <= 20 and not ConROC:Raidmob())))) then
         return _Eviscerate;
     end
-    
-    if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and hemoRDY and not hemoDEBUFF then
+
+    if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and _Hemorrhage_RDY and not _Hemorrhage_DEBUFF then
         return _Hemorrhage;
     end
-    
-    if bStabRDY and hasDagger and not ConROC:TarYou() and incombat then
+
+    if _Backstab_RDY and hasDagger and not ConROC:TarYou() and _in_combat then
         return _Backstab;
     end
-    
-    if gStrikeRDY and ConROC:TarYou() then
-        return Sub_Ability.GhostlyStrike;
+
+    if _GhostlyStrike_RDY and ConROC:TarYou() then
+        return _GhostlyStrike;
     end
 
-    if sStrikeRDY and (not hasDagger or ConROC:TarYou()) then
+    if _SinisterStrike_RDY and (not hasDagger or ConROC:TarYou()) then
         return _SinisterStrike;
     end
-
-    return nil;
+ return nil;
 end
 
-function ConROC.Rogue.Defense(_, timeShift, currentSpell, gcd) --
-    --Ranks
-    if IsSpellKnown(Sub_Ability.StealthRank4) then _Stealth = Sub_Ability.StealthRank4;
-    elseif IsSpellKnown(Sub_Ability.StealthRank3) then _Stealth = Sub_Ability.StealthRank3;
-    elseif IsSpellKnown(Sub_Ability.StealthRank2) then _Stealth = Sub_Ability.StealthRank2; end
-    --Abilities
-    local stealthRDY = ConROC:AbilityReady(_Stealth, timeShift)
-    local evasionRDY = ConROC:AbilityReady(_Evasion, timeShift)
-    
-    --Conditions
-    local ph = ConROC:PercentHealth("player")
-    local stealthed = IsStealthed()
-    local incombat = UnitAffectingCombat("player")
-    
-    --Rotations
-    if stealthRDY and not stealthed and not incombat then
+function ConROC.Rogue.Defense(_, timeShift, currentSpell, gcd)
+	ConROC:UpdateSpellID();
+	ConROC:Stats();
+
+ --Abilities
+    local _Stealth, _Stealth_RDY = ConROC:AbilityReady(Ability.Stealth, timeShift)
+    local _Evasion, _Evasion_RDY = ConROC:AbilityReady(Ability.Evasion, timeShift)
+
+ --Rotations
+    if _Stealth_RDY and not _is_stealthed and not _in_combat then
         return _Stealth
     end
 
-    if evasionRDY and incombat and ConROC:TarYou() and ph <= 75 then
+    if _Evasion_RDY and _in_combat and ConROC:TarYou() and _Player_Percent_Health <= 75 then
         return _Evasion
     end
-
-    return nil
+return nil
 end
 
 function ConROC:GetItemNameFromID(_itemID)
     local itemName, _, _, _, _, _, _, _, _, _ = GetItemInfo(_itemID)
     return itemName
 end
+
 function ConROC:GetItemTextureFromID(_itemID)
     local _, _, _, _, _, _, _, _, _, itemTexture = GetItemInfo(_itemID)
     return itemTexture
@@ -951,7 +794,6 @@ function ConROC:ApplyPoison(_mhPoison, _ohPoison)
     ConROCMainHandBGFrame:SetAlpha(_mhAlpha);
     ConROCMainHandFrame:SetAlpha(_mhAlpha);
 
-    
     if _ohPoison ~= "none" then
     local ohName = _ohPoison.name;
     local ohTexture = select(5, GetItemInfoInstant(_ohPoison.id))
@@ -985,12 +827,12 @@ end
 function ConROC:CreatePoisonFrame()
     local _, Class, classId = UnitClass("player")
     local Color = RAID_CLASS_COLORS[Class]
-    local mhName = _InstantPoison.name
-    local mhTexture = select(5, GetItemInfoInstant(_InstantPoison.id))
-    --local mhName, _, _, _, _, _, _, _, _, mhTexture = GetItemInfo(_InstantPoison)
-    local ohName = _DeadlyPoison.name
-    local ohTexture = select(5, GetItemInfoInstant(_DeadlyPoison.id))
-    --local ohName, _, _, _, _, _, _, _, _, ohTexture = GetItemInfo(_DeadlyPoison)
+    local mhName = Poisons.InstantPoison.name
+    local mhTexture = select(5, GetItemInfoInstant(Poisons.InstantPoison.id))
+    --local mhName, _, _, _, _, _, _, _, _, mhTexture = GetItemInfo(Poisons.InstantPoison)
+    local ohName = Poisons.DeadlyPoison.name
+    local ohTexture = select(5, GetItemInfoInstant(Poisons.DeadlyPoison.id))
+    --local ohName, _, _, _, _, _, _, _, _, ohTexture = GetItemInfo(Poisons.DeadlyPoison)
     local frame = CreateFrame("Frame", "ConROCApplyPoisonFrame", UIParent, "BackdropTemplate")
 
     frame:SetFrameStrata("MEDIUM")
