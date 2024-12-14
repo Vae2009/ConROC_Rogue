@@ -101,6 +101,7 @@ local function CheckScrollbarVisibility()
 end
 
 function ConROC:SpellmenuClass()
+	ConROC:UpdateSpellID();
     ConROC_RoleSettingsTable = {
         {
         frameName = "Melee",
@@ -405,8 +406,6 @@ function ConROC_OptionsWindow(_table, _roles)
                 else
                     ConROC:OptionCheckboxSpell(_spellData, i, j, _spellFrame);
                 end
-            elseif _spellData.type == "wand" then
-                ConROC:OptionWand(_spellData, i, j, _spellFrame);
             elseif _spellData.type == "custom" then
                 ConROC:CustomOption(_spellData, i, j, _spellFrame);
             elseif _spellData.type == "textfield" then
@@ -431,7 +430,7 @@ function ConROC:OptionCheckboxSpell(_spellData, i, j, _spellFrame)
     --spell start
     local spellName, _, spellTexture = GetSpellInfo(_spellData.spellID)
     local oItem = CreateFrame("CheckButton", "ConROC_SM_".._spellData.spellCheckbox, _spellFrame, "UICheckButtonTemplate");
-    local oItemtext = oItem:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall");     
+    local oItemtext = oItem:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall");
     if j == 1 then
         oItem:SetPoint("TOPLEFT", lastFrame, "TOPLEFT", 0, 0);
     else
@@ -441,7 +440,7 @@ function ConROC:OptionCheckboxSpell(_spellData, i, j, _spellFrame)
     oItem:SetSize(20,20)
     ConROC:setRoleChecked(_spellData, oItem)
 
-    oItem:SetScript("OnClick", 
+    oItem:SetScript("OnClick",
         function(self)
             ConROC:setRoleSpellClicked(_spellData, self)
         end);
@@ -519,7 +518,7 @@ function ConROC:OptionRadioButtonSpell(_spellData, i, j, _spellFrame, _radioButt
     c1t:SetPoint("LEFT", oItem, "RIGHT", 2, 0);
     if type(_spellData.spellID) == "number" then
         oItemtext:SetPoint('LEFT', c1t, 'RIGHT', 4, 0);
-    else                
+    else
         oItemtext:SetPoint('LEFT', oItem, 'RIGHT', 26, 0);
     end
     _G[myFrame] = oItem
