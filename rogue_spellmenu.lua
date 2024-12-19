@@ -722,6 +722,7 @@ function ConROC:OptionNone(_spellData, i, j, _spellFrame, _checkType, _radioButt
 end
 
 function ConROC:SpellMenuUpdate(newSpell)
+	ConROC:UpdateSpellID();
     lastFrame = ConROCScrollChild;
     local anyHLVisible = false;
     scrollHeight = 0;
