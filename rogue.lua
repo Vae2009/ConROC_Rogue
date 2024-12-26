@@ -8,51 +8,31 @@ local _mhNameMax, _mhTexture;
 local _ohNameMax, _ohTexture;
 local _mhAlpha = 1;
 local _ohAlpha = 1;
-local currentSpecName;
-local currentSpecID;
 
 function ConROC:EnableRotationModule()
     self.Description = "Rogue"
     self.NextSpell = ConROC.Rogue.Damage
 
     self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
-    self:RegisterEvent("PLAYER_TALENT_UPDATE");
     self.lastSpellId = 0
+
+    ConROC:SpellmenuClass();
 end
 
 function ConROC:EnableDefenseModule()
     self.NextDef = ConROC.Rogue.Defense
 end
+
 function ConROC:UNIT_SPELLCAST_SUCCEEDED(event, unitID, lineID, spellID)
     if unitID == "player" then
         self.lastSpellId = spellID
     end
 end
 
-local Racial, Spec, Ability, Poisons, Rank, Ass_Talent, Com_Talent, Sub_Talent, Runes, Buff, Debuff = ids.Racial, ids.Spec, ids.Ability, ids.Poisons, ids.Rank, ids.Assassination_Talent, ids.Combat_Talent, ids.Subtlety_Talent, ids.Runes, ids.Buff, ids.Debuff;
-
-function ConROC:SpecUpdate()
-    currentSpecName = ConROC:currentSpec()
-    currentSpecID = ConROC:currentSpec("ID")
-    if currentSpecName then
-       ConROC:Print(self.Colors.Info .. "Current spec:", self.Colors.Success ..  currentSpecName)
-    else
-       ConROC:Print(self.Colors.Error .. "You do not currently have a spec.")
-    end
-end
-
-ConROC:SpecUpdate()
-
-ConROC:UpdateSpellID()
-
-
-
-function ConROC:PLAYER_TALENT_UPDATE()
-    ConROC:SpecUpdate();
-    ConROC:closeSpellmenu();
-end
+local Racial, Spec, Ability, Poisons, Rank, Ass_Talent, Com_Talent, Sub_Talent, Engrave, Runes, Buff, Debuff = ids.Racial, ids.Spec, ids.Ability, ids.Poisons, ids.Rank, ids.Assassination_Talent, ids.Combat_Talent, ids.Subtlety_Talent, ids.Engrave, ids.Runes, ids.Buff, ids.Debuff;
 
 --Info
+local _Player_Spec, _Player_Spec_ID = ConROC:currentSpec();
 local _Player_Level = UnitLevel("player");
 local _Player_Percent_Health = ConROC:PercentHealth('player');
 local _is_PvP = ConROC:IsPvP();
@@ -81,6 +61,7 @@ local _can_Execute = _Target_Percent_Health < 20;
 local _Berserking, _Berserking_RDY = _, _;
 
 function ConROC:Stats()
+	_Player_Spec, _Player_Spec_ID = ConROC:currentSpec();
 	_Player_Level = UnitLevel("player");
 	_Player_Percent_Health = ConROC:PercentHealth('player');
 	_is_PvP = ConROC:IsPvP();
@@ -452,7 +433,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
         return nil
         end
-        if _Player_Level < 10 or not currentSpecID then
+        if _Player_Level < 10 or not _Player_Spec_ID then
             if _is_stealthed then
                 if _Shadowstrike_RDY and not _target_in_melee and not (_Ambush_RDY and _Backstab_RDY) then
                     return _Shadowstrike
@@ -542,7 +523,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 return _SinisterStrike;
             end
         return nil;
-        elseif (currentSpecID == ids.Spec.Assassination) then
+        elseif (_Player_Spec_ID == ids.Spec.Assassination) then
             if _is_stealthed then
                 if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _target_in_melee and _Garrote_RDY and not _Garrote_DEBUFF then
                     return _Garrote;
@@ -582,7 +563,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
             return nil;
             end
-        elseif (currentSpecID == ids.Spec.Combat) then
+        elseif (_Player_Spec_ID == ids.Spec.Combat) then
             if _is_stealthed then
                 if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _target_in_melee and _Garrote_RDY and not _Garrote_DEBUFF then
                     return _Garrote;
@@ -622,7 +603,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
             return nil;
             end
-        elseif (currentSpecID == ids.Spec.Subtlety) then
+        elseif (_Player_Spec_ID == ids.Spec.Subtlety) then
             if _is_stealthed then
                 if _Ambush_RDY and hasDagger then
                     return _Ambush;
