@@ -476,12 +476,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                             break;
                         end
                     end
-
-                    tinsert(ConROC.SuggestedSpells, 26008); --Waiting Spell Icon
-                    _Queue = _Queue + 3;
-                    break;
-                end
-                if _Player_Level < 10 or not _Player_Spec_ID then
+                elseif _Player_Level < 10 or not _Player_Spec_ID then
                     if _is_stealthed then
                         if _Shadowstrike_RDY and not _target_in_melee and not (_Ambush_RDY and _Backstab_RDY) then
                             tinsert(ConROC.SuggestedSpells, _Shadowstrike);
@@ -642,11 +637,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                         _Queue = _Queue + 1;
                         break;
                     end
-
-                    tinsert(ConROC.SuggestedSpells, 26008); --Waiting Spell Icon
-                    _Queue = _Queue + 3;
-                    break;
-                elseif (_Player_Spec_ID == ids.Spec.Assassination) then
+                elseif (_Player_Spec_ID == Spec.Assassination) then
                     if _is_stealthed then
                         if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _target_in_melee and _Garrote_RDY and not _Garrote_DEBUFF then
                             tinsert(ConROC.SuggestedSpells, _Garrote);
@@ -714,11 +705,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                             break;
                         end
                     end
-
-                    tinsert(ConROC.SuggestedSpells, 26008); --Waiting Spell Icon
-                    _Queue = _Queue + 3;
-                    break;
-                elseif (_Player_Spec_ID == ids.Spec.Combat) then
+                elseif (_Player_Spec_ID == Spec.Combat) then
                     if _is_stealthed then
                         if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _target_in_melee and _Garrote_RDY and not _Garrote_DEBUFF then
                             tinsert(ConROC.SuggestedSpells, _Garrote);
@@ -786,11 +773,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                             break;
                         end
                     end
-
-                    tinsert(ConROC.SuggestedSpells, 26008); --Waiting Spell Icon
-                    _Queue = _Queue + 3;
-                    break;
-                elseif (_Player_Spec_ID == ids.Spec.Subtlety) then
+                elseif (_Player_Spec_ID == Spec.Subtlety) then
                     if _is_stealthed then
                         if _Ambush_RDY and hasDagger then
                             tinsert(ConROC.SuggestedSpells, _Ambush);
@@ -851,10 +834,6 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                             break;
                         end
                     end
-
-                    tinsert(ConROC.SuggestedSpells, 26008); --Waiting Spell Icon
-                    _Queue = _Queue + 3;
-                    break;
                 end
             else--not SoD
                 if _is_stealthed then
@@ -987,11 +966,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                     _Queue = _Queue + 1;
                     break;
                 end
-
-                tinsert(ConROC.SuggestedSpells, 26008); --Waiting Spell Icon
-                _Queue = _Queue + 3;
-                break;
             end
+
+            tinsert(ConROC.SuggestedSpells, 26008); --Waiting Spell Icon
+            _Queue = _Queue + 3;
+            break;
         end
     until _Queue >= 3;
 return nil;
