@@ -174,11 +174,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
     if _tickerVar >= 1 then
         if not _Mounted and (not _Resting or _is_stealthed) then
             if ConROC:CheckBox(ConROC_SM_PoisonMH_Instant) then
-                if ids.ActivePoison[mainHandEnchantID] == ids.optionMaxIds.InstantPoison.name then
+                if ids.ActivePoison[mainHandEnchantID] == Poisons.InstantPoison.name then
                     _mhAlpha = .5
                 end
-                _mhP = ids.optionMaxIds.InstantPoison
-                _mhNameMax = ids.optionMaxIds.InstantPoison.name
+                _mhP = Poisons.InstantPoison
+                _mhNameMax = Poisons.InstantPoison.name
                 local pName = Poisons.InstantPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
@@ -188,11 +188,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonMH_Crippling) then
-                if ids.ActivePoison[mainHandEnchantID] == ids.optionMaxIds.CripplingPoison.name then
+                if ids.ActivePoison[mainHandEnchantID] == Poisons.CripplingPoison.name then
                     _mhAlpha = .5
                 end
-                _mhP = ids.optionMaxIds.CripplingPoison
-                _mhNameMax = ids.optionMaxIds.CripplingPoison.name
+                _mhP = Poisons.CripplingPoison
+                _mhNameMax = Poisons.CripplingPoison.name
                 local pName = Poisons.CripplingPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
@@ -202,11 +202,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonMH_Mindnumbing) then
-                if ids.ActivePoison[mainHandEnchantID] == ids.optionMaxIds.MindnumbingPoison.name then
+                if ids.ActivePoison[mainHandEnchantID] == Poisons.MindnumbingPoison.name then
                     _mhAlpha = .5
                 end
-                _mhP = ids.optionMaxIds.MindnumbingPoison
-                _mhNameMax = ids.optionMaxIds.MindnumbingPoison.name
+                _mhP = Poisons.MindnumbingPoison
+                _mhNameMax = Poisons.MindnumbingPoison.name
                 local pName = Poisons.MindnumbingPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
@@ -216,11 +216,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonMH_Deadly) then
-                if ids.ActivePoison[mainHandEnchantID] == ids.optionMaxIds.DeadlyPoison.name then
+                if ids.ActivePoison[mainHandEnchantID] == Poisons.DeadlyPoison.name then
                     _mhAlpha = .5
                 end
-                _mhP = ids.optionMaxIds.DeadlyPoison
-                _mhNameMax = ids.optionMaxIds.DeadlyPoison.name
+                _mhP = Poisons.DeadlyPoison
+                _mhNameMax = Poisons.DeadlyPoison.name
                 local pName = Poisons.DeadlyPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
@@ -230,11 +230,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonMH_Wound) then
-                if ids.ActivePoison[mainHandEnchantID] == ids.optionMaxIds.WoundPoison.name then
+                if ids.ActivePoison[mainHandEnchantID] == Poisons.WoundPoison.name then
                     _mhAlpha = .5
                 end
-                _mhP = ids.optionMaxIds.WoundPoison
-                _mhNameMax = ids.optionMaxIds.WoundPoison.name
+                _mhP = Poisons.WoundPoison
+                _mhNameMax = Poisons.WoundPoison.name
                 local pName = Poisons.WoundPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
@@ -244,11 +244,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonMH_Anesthetic) then
-                if ids.ActivePoison[mainHandEnchantID] == ids.optionMaxIds.AnestheticPoison.name then
+                if ids.ActivePoison[mainHandEnchantID] == Poisons.AnestheticPoison.name then
                     _mhAlpha = .5
                 end
-                _mhP = ids.optionMaxIds.AnestheticPoison
-                _mhNameMax = ids.optionMaxIds.AnestheticPoison.name
+                _mhP = Poisons.AnestheticPoison
+                _mhNameMax = Poisons.AnestheticPoison.name
                 local pName = Poisons.AnestheticPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
@@ -258,11 +258,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonOH_Instant) then
-                if ids.ActivePoison[offHandEnchantId] == ids.optionMaxIds.InstantPoison.name then
+                if ids.ActivePoison[offHandEnchantId] == Poisons.InstantPoison.name then
                     _ohAlpha = .5
                 end
-                _ohP = ids.optionMaxIds.InstantPoison
-                _ohNameMax = ids.optionMaxIds.InstantPoison.name
+                _ohP = Poisons.InstantPoison
+                _ohNameMax = Poisons.InstantPoison.name
                 local pName = Poisons.InstantPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
@@ -272,11 +272,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonOH_Crippling) then
-                if ids.ActivePoison[offHandEnchantId] == ids.optionMaxIds.CripplingPoison.name then
+                if ids.ActivePoison[offHandEnchantId] == Poisons.CripplingPoison.name then
                     _ohAlpha = .5
                 end
-                _ohP = ids.optionMaxIds.CripplingPoison
-                _ohNameMax = ids.optionMaxIds.CripplingPoison.name
+                _ohP = Poisons.CripplingPoison
+                _ohNameMax = Poisons.CripplingPoison.name
                 local pName = Poisons.CripplingPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
@@ -286,11 +286,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonOH_Mindnumbing) then
-                if ids.ActivePoison[offHandEnchantId] == ids.optionMaxIds.MindnumbingPoison.name then
+                if ids.ActivePoison[offHandEnchantId] == Poisons.MindnumbingPoison.name then
                     _ohAlpha = .5
                 end
-                _ohP = ids.optionMaxIds.MindnumbingPoison
-                _ohNameMax = ids.optionMaxIds.MindnumbingPoison.name
+                _ohP = Poisons.MindnumbingPoison
+                _ohNameMax = Poisons.MindnumbingPoison.name
                 local pName = Poisons.MindnumbingPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
@@ -300,11 +300,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonOH_Deadly) then
-                if ids.ActivePoison[offHandEnchantId] == ids.optionMaxIds.DeadlyPoison.name then
+                if ids.ActivePoison[offHandEnchantId] == Poisons.DeadlyPoison.name then
                     _ohAlpha = .5
                 end
-                _ohP = ids.optionMaxIds.DeadlyPoison
-                _ohNameMax = ids.optionMaxIds.DeadlyPoison.name
+                _ohP = Poisons.DeadlyPoison
+                _ohNameMax = Poisons.DeadlyPoison.name
                 local pName = Poisons.DeadlyPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
@@ -314,11 +314,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonOH_Wound) then
-                if ids.ActivePoison[offHandEnchantId] == ids.optionMaxIds.WoundPoison.name then
+                if ids.ActivePoison[offHandEnchantId] == Poisons.WoundPoison.name then
                     _ohAlpha = .5
                 end
-                _ohP = ids.optionMaxIds.WoundPoison
-                _ohNameMax = ids.optionMaxIds.WoundPoison.name
+                _ohP = Poisons.WoundPoison
+                _ohNameMax = Poisons.WoundPoison.name
                 local pName = Poisons.WoundPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
@@ -328,11 +328,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if ConROC:CheckBox(ConROC_SM_PoisonOH_Anesthetic) then
-                if ids.ActivePoison[offHandEnchantId] ~= ids.optionMaxIds.AnestheticPoison.name then
+                if ids.ActivePoison[offHandEnchantId] ~= Poisons.AnestheticPoison.name then
                     _ohAlpha = .5
                 end
-                _ohP = ids.optionMaxIds.AnestheticPoison
-                _ohNameMax = ids.optionMaxIds.AnestheticPoison.name
+                _ohP = Poisons.AnestheticPoison
+                _ohNameMax = Poisons.AnestheticPoison.name
                 local pName = Poisons.AnestheticPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
