@@ -179,7 +179,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _mhP = Poisons.InstantPoison
                 _mhNameMax = Poisons.InstantPoison.name
-                local pName = Poisons.InstantPoisonRank1.name
+                local pName = Rank.InstantPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
                     _mhAlpha = 1
@@ -193,7 +193,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _mhP = Poisons.CripplingPoison
                 _mhNameMax = Poisons.CripplingPoison.name
-                local pName = Poisons.CripplingPoisonRank1.name
+                local pName = Rank.CripplingPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
                     _mhAlpha = 1
@@ -207,7 +207,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _mhP = Poisons.MindnumbingPoison
                 _mhNameMax = Poisons.MindnumbingPoison.name
-                local pName = Poisons.MindnumbingPoisonRank1.name
+                local pName = Rank.MindnumbingPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
                     _mhAlpha = 1
@@ -221,7 +221,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _mhP = Poisons.DeadlyPoison
                 _mhNameMax = Poisons.DeadlyPoison.name
-                local pName = Poisons.DeadlyPoisonRank1.name
+                local pName = Rank.DeadlyPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
                     _mhAlpha = 1
@@ -235,7 +235,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _mhP = Poisons.WoundPoison
                 _mhNameMax = Poisons.WoundPoison.name
-                local pName = Poisons.WoundPoisonRank1.name
+                local pName = Rank.WoundPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
                     _mhAlpha = 1
@@ -249,7 +249,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _mhP = Poisons.AnestheticPoison
                 _mhNameMax = Poisons.AnestheticPoison.name
-                local pName = Poisons.AnestheticPoisonRank1.name
+                local pName = Rank.AnestheticPoisonRank1.name
                 local pCount = GetItemCount(_mhP.id)
                 if ids.ActivePoison[mainHandEnchantID] ~= _mhNameMax then
                     _mhAlpha = 1
@@ -263,7 +263,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _ohP = Poisons.InstantPoison
                 _ohNameMax = Poisons.InstantPoison.name
-                local pName = Poisons.InstantPoisonRank1.name
+                local pName = Rank.InstantPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
                     _ohAlpha = 1
@@ -277,7 +277,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _ohP = Poisons.CripplingPoison
                 _ohNameMax = Poisons.CripplingPoison.name
-                local pName = Poisons.CripplingPoisonRank1.name
+                local pName = Rank.CripplingPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
                     _ohAlpha = 1
@@ -291,7 +291,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _ohP = Poisons.MindnumbingPoison
                 _ohNameMax = Poisons.MindnumbingPoison.name
-                local pName = Poisons.MindnumbingPoisonRank1.name
+                local pName = Rank.MindnumbingPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
                     _ohAlpha = 1
@@ -305,7 +305,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _ohP = Poisons.DeadlyPoison
                 _ohNameMax = Poisons.DeadlyPoison.name
-                local pName = Poisons.DeadlyPoisonRank1.name
+                local pName = Rank.DeadlyPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
                     _ohAlpha = 1
@@ -319,7 +319,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _ohP = Poisons.WoundPoison
                 _ohNameMax = Poisons.WoundPoison.name
-                local pName = Poisons.WoundPoisonRank1.name
+                local pName = Rank.WoundPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
                     _ohAlpha = 1
@@ -333,7 +333,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                 end
                 _ohP = Poisons.AnestheticPoison
                 _ohNameMax = Poisons.AnestheticPoison.name
-                local pName = Poisons.AnestheticPoisonRank1.name
+                local pName = Rank.AnestheticPoisonRank1.name
                 local pCount = GetItemCount(_ohP.id)
                 if ids.ActivePoison[offHandEnchantId] ~= _ohNameMax then
                     _ohAlpha = 1
@@ -555,11 +555,11 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                         break;
                     end
 
-                    if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
+                    if ConROC:CheckBox(ConROC_SM_Buff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
                         tinsert(ConROC.SuggestedSpells, _SliceandDice);
-                        _Combo = 0;
                         _SliceandDice_BUFF = true;
                         _SliceandDice_DUR = 21;
+                        _Combo = 0;
                         _Queue = _Queue + 1;
                         break;
                     end
@@ -701,7 +701,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                     break;
                 end
 
-                if ConROC:CheckBox(ConROC_SM_Debuff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
+                if ConROC:CheckBox(ConROC_SM_Buff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
                     tinsert(ConROC.SuggestedSpells, _SliceandDice);
                     _Combo = 0;
                     _SliceandDice_BUFF = true;

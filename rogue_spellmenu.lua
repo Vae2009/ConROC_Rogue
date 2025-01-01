@@ -43,15 +43,17 @@ function ConROC:setRole(radioBtn, roleData, radioButtons)
     radioBtn:SetChecked(true)
     ConROCRogueSpells[roleData.role] = true
 end
+
 function ConROC:checkActiveRole()
     for _, roleSettings in ipairs(ConROC_RoleSettingsTable) do
         local frameName = roleSettings.frameName
         local role = _G[roleSettings.role]
-
-        if role:GetChecked() then
-                local checkboxName = "ConROC_"..frameName.."_"
-                -- The frame with matching name is checked, perform actions here
-                return role, checkboxName, frameName
+        if roleSettings.server == nil or roleSettings.server then
+            if role:GetChecked() then
+                    local checkboxName = "ConROC_"..frameName.."_"
+                    -- The frame with matching name is checked, perform actions here
+                    return role, checkboxName, frameName
+            end
         end
     end
 end
