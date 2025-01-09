@@ -62,6 +62,12 @@ ids.Rank = {
 	AmbushRank4 = 11267,
 	AmbushRank5 = 11268,
 	AmbushRank6 = 11269,
+	AmbushSoDRank1 = 462718,
+	AmbushSoDRank2 = 462719,
+	AmbushSoDRank3 = 462720,
+	AmbushSoDRank4 = 462721,
+	AmbushSoDRank5 = 462722,
+	AmbushSoDRank6 = 462723,
 	EviscerateRank1 = 2098,
 	EviscerateRank2 = 6760,
 	EviscerateRank3 = 6761,
@@ -81,6 +87,12 @@ ids.Rank = {
 	GarroteRank4 = 8633,
 	GarroteRank5 = 11289,
 	GarroteRank6 = 11290,
+	GarroteSoDRank1 = 462724,
+	GarroteSoDRank2 = 462726,
+	GarroteSoDRank3 = 462727,
+	GarroteSoDRank4 = 462728,
+	GarroteSoDRank5 = 462729,
+	GarroteSoDRank6 = 462730,
 	KidneyShotRank1 = 408,
 	KidneyShotRank2 = 8643,
 	RuptureRank1 = 1943,
@@ -100,6 +112,16 @@ ids.Rank = {
 	BackstabRank6 = 11279,
 	BackstabRank7 = 11280,
 	BackstabRank8 = 11281,
+	BackstabRank9 = 25300,
+	BackstabSoDRank1 = 462709,
+	BackstabSoDRank2 = 462710,
+	BackstabSoDRank3 = 462711,
+	BackstabSoDRank4 = 462712,
+	BackstabSoDRank5 = 462713,
+	BackstabSoDRank6 = 462714,
+	BackstabSoDRank7 = 462715,
+	BackstabSoDRank8 = 462716,
+	BackstabSoDRank9 = 462717,
 	FeintRank1 = 1966,
 	FeintRank2 = 6768,
 	FeintRank3 = 8637,
@@ -160,82 +182,97 @@ ids.Rank = {
 	WoundPoisonRank4 = {id = 10922, name = "Wound Poison IV", enchantID = 706, type = "poison"},
 }
 ids.Assassination_Talent = {
-	ImprovedPoisons =  1, 
-	Lethality =  2, 
-	Malice =  3, 
-	RemorselessAttacks =  4, 
-	Ruthlessness =  5, 
-	Murder =  6, 
-	ImprovedEviscerate =  7, 
-	ImprovedSliceandDice =  8, 
-	ImprovedExposeArmor =  9, 
-	ImprovedKidneyShot =  10, 
-	ColdBlood =  11, 
-	RelentlessStrikes =  12, 
-	SealFate =  13, 
-	Vigor =  14, 
-	VilePoisons =  15, 
+	ImprovedPoisons = 1,
+	Lethality = 2,
+	Malice = 3,
+	RemorselessAttacks = 4,
+	Ruthlessness = 5,
+	Murder = 6,
+	ImprovedEviscerate = 7,
+	ImprovedSliceandDice = 8,
+	ImprovedExposeArmor = 9,
+	ImprovedKidneyShot = 10,
+	ColdBlood = 11,
+	RelentlessStrikes = 12,
+	SealFate = 13,
+	Vigor = 14,
+	VilePoisons = 15,
 }
 ids.Combat_Talent = {
-	Precision =  1, 
-	DaggerSpecialization =  2, 
-	FistWeaponSpecialization =  3, 
-	MaceSpecialization =  4, 
-	LightningReflexes =  5, 
-	Deflection =  6, 
-	ImprovedSinisterStrike =  7, 
-	ImprovedBackstab =  8, 
-	ImprovedGouge =  9, 
-	Endurance =  10, 
-	AdrenalineRush =  11, 
-	ImprovedKick =  12, 
-	DualWieldSpecialization =  13, 
-	ImprovedSprint =  14, 
-	BladeFlurry =  15, 
-	SwordSpecialization =  16, 
-	Riposte =  17, 
-	Aggression =  18, 
-	WeaponExpertise =  19, 
+	Precision = 1,
+	DaggerSpecialization = 2,
+	FistWeaponSpecialization = 3,
+	MaceSpecialization = 4,
+	LightningReflexes = 5,
+	Deflection = 6,
+	ImprovedSinisterStrike = 7,
+	ImprovedBackstab = 8,
+	ImprovedGouge = 9,
+	Endurance = 10,
+	AdrenalineRush = 11,
+	ImprovedKick = 12,
+	DualWieldSpecialization = 13,
+	ImprovedSprint = 14,
+	BladeFlurry = 15,
+	SwordSpecialization = 16,
+	Riposte = 17,
+	Aggression = 18,
+	WeaponExpertise = 19,
 }
-ids.Subtlety_Talent = { 
-	MasterofDeception =  1, 
-	Camouflage =  2, 
-	Initiative =  3, 
-	Setup =  4, 
-	Elusiveness =  5, 
-	Opportunity =  6, 
-	ImprovedSap =  7, 
-	ImprovedAmbush =  8, 
-	DirtyDeeds =  9, 
-	Preparation =  10, 
-	GhostlyStrike =  11, 
-	Premeditation =  12, 
-	Hemorrhage =  13, 
-	SerratedBlades =  14, 
-	SleightofHand =  15, 
-	HeightenedSenses =  16, 
-	Deadliness =  17, 
+ids.Subtlety_Talent = {
+	MasterofDeception = 1,
+	Camouflage = 2,
+	Initiative = 3,
+	Setup = 4,
+	Elusiveness = 5,
+	Opportunity = 6,
+	ImprovedSap = 7,
+	ImprovedAmbush = 8,
+	DirtyDeeds = 9,
+	Preparation = 10,
+	GhostlyStrike = 11,
+	Premeditation = 12,
+	Hemorrhage = 13,
+	SerratedBlades = 14,
+	SleightofHand = 15,
+	HeightenedSenses = 16,
+	Deadliness = 17,
 }
 ids.Engrave = {
-
+	--Chest--
+	JustaFleshWound = 6710,
+	SlaughterfromtheShadows = 7017,
+	--Legs--
+	Envenom = 6787,
+	--Wrist--
+	CuttotheChase = 7132,
+	--Hands--
+	Cutthroat = 7015,
+	SaberSlash = 7014,
 }
 ids.Runes = {
 	BetweentheEyes = 400009,
 	BladeDance = 400012,
+	Blunderbuss = 436564,
+	CrimsonTempest = 412096,
 	Envenom = 399963,
 	MainGauche = 424919,
 	Mutilate = 399956,
+	PoisonedKnife = 425012,
 	QuickDraw = 398196,
 	SaberSlash = 424785,  --424979,
+	Shadowstep = 400029,
 	Shadowstrike = 399985,
 	Shiv = 424799,
-	Tease = 410412, -- from the rune "Just a Flesh Wound", replaces Faint
 	ShurikenToss = 399986, --Phase 2 - AoE hits up to 5
+	Tease = 410412, -- from the rune "Just a Flesh Wound", replaces Faint
+
 	MasterofSubtlety = 425098, --Phase 2 -passive -buff 10% +dmg for 6 sec breaking stealth
 }
 -- Auras
 ids.Buff = {
-
+	Cutthroat = 462707,
+	MainGauche = 462752,
 }
 ids.Debuff = {
 
@@ -265,11 +302,24 @@ ids.ActivePoison = { -- list of EnchantId and Poison name to map against Poisons
 
 function ConROC:UpdateSpellID()
 	--Ranks
-	if IsSpellKnown(ids.Rank.AmbushRank6) then ids.Ability.Ambush = ids.Rank.AmbushRank6
-	elseif IsSpellKnown(ids.Rank.AmbushRank5) then ids.Ability.Ambush = ids.Rank.AmbushRank5
-	elseif IsSpellKnown(ids.Rank.AmbushRank4) then ids.Ability.Ambush = ids.Rank.AmbushRank4
-	elseif IsSpellKnown(ids.Rank.AmbushRank3) then ids.Ability.Ambush = ids.Rank.AmbushRank3
-	elseif IsSpellKnown(ids.Rank.AmbushRank2) then ids.Ability.Ambush = ids.Rank.AmbushRank2 end
+	if IsSpellKnown(ids.Rank.AmbushRank6) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank6;
+		else ids.Ability.Ambush = ids.Rank.AmbushRank6; end
+	elseif IsSpellKnown(ids.Rank.AmbushRank5) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank5;
+		else ids.Ability.Ambush = ids.Rank.AmbushRank5; end
+	elseif IsSpellKnown(ids.Rank.AmbushRank4) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank4;
+		else ids.Ability.Ambush = ids.Rank.AmbushRank4; end
+	elseif IsSpellKnown(ids.Rank.AmbushRank3) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank3;
+		else ids.Ability.Ambush = ids.Rank.AmbushRank3; end
+	elseif IsSpellKnown(ids.Rank.AmbushRank2) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank2;
+		else ids.Ability.Ambush = ids.Rank.AmbushRank2; end
+	elseif IsSpellKnown(ids.Rank.AmbushRank1) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank1; end
+	end
 
 	if IsSpellKnown(ids.Rank.EviscerateRank8) then ids.Ability.Eviscerate = ids.Rank.EviscerateRank8
 	elseif IsSpellKnown(ids.Rank.EviscerateRank7) then ids.Ability.Eviscerate = ids.Rank.EviscerateRank7
@@ -284,11 +334,24 @@ function ConROC:UpdateSpellID()
 	elseif IsSpellKnown(ids.Rank.ExposeArmorRank3) then ids.Ability.ExposeArmor = ids.Rank.ExposeArmorRank3;
 	elseif IsSpellKnown(ids.Rank.ExposeArmorRank2) then ids.Ability.ExposeArmor = ids.Rank.ExposeArmorRank2; end
 
-	if IsSpellKnown(ids.Rank.GarroteRank6) then ids.Ability.Garrote = ids.Rank.GarroteRank6
-	elseif IsSpellKnown(ids.Rank.GarroteRank5) then ids.Ability.Garrote = ids.Rank.GarroteRank5
-	elseif IsSpellKnown(ids.Rank.GarroteRank4) then ids.Ability.Garrote = ids.Rank.GarroteRank4
-	elseif IsSpellKnown(ids.Rank.GarroteRank3) then ids.Ability.Garrote = ids.Rank.GarroteRank3
-	elseif IsSpellKnown(ids.Rank.GarroteRank2) then ids.Ability.Garrote = ids.Rank.GarroteRank2 end
+	if IsSpellKnown(ids.Rank.GarroteRank6) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank6;
+		else ids.Ability.Garrote = ids.Rank.GarroteRank6; end
+	elseif IsSpellKnown(ids.Rank.GarroteRank5) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank5;
+		else ids.Ability.Garrote = ids.Rank.GarroteRank5; end
+	elseif IsSpellKnown(ids.Rank.GarroteRank4) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank4;
+		else ids.Ability.Garrote = ids.Rank.GarroteRank4; end
+	elseif IsSpellKnown(ids.Rank.GarroteRank3) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank3;
+		else ids.Ability.Garrote = ids.Rank.GarroteRank3; end
+	elseif IsSpellKnown(ids.Rank.GarroteRank2) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank2;
+		else ids.Ability.Garrote = ids.Rank.GarroteRank2; end
+	elseif IsSpellKnown(ids.Rank.GarroteRank1) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank1; end
+	end
 
 	if IsSpellKnown(ids.Rank.KidneyShotRank2) then ids.Ability.KidneyShot = ids.Rank.KidneyShotRank2 end
 
@@ -300,13 +363,33 @@ function ConROC:UpdateSpellID()
 
 	if IsSpellKnown(ids.Rank.SliceandDiceRank2) then ids.Ability.SliceandDice = ids.Rank.SliceandDiceRank2 end
 
-	if IsSpellKnown(ids.Rank.BackstabRank8) then ids.Ability.Backstab = ids.Rank.BackstabRank8
-	elseif IsSpellKnown(ids.Rank.BackstabRank7) then ids.Ability.Backstab = ids.Rank.BackstabRank7
-	elseif IsSpellKnown(ids.Rank.BackstabRank6) then ids.Ability.Backstab = ids.Rank.BackstabRank6
-	elseif IsSpellKnown(ids.Rank.BackstabRank5) then ids.Ability.Backstab = ids.Rank.BackstabRank5
-	elseif IsSpellKnown(ids.Rank.BackstabRank4) then ids.Ability.Backstab = ids.Rank.BackstabRank4
-	elseif IsSpellKnown(ids.Rank.BackstabRank3) then ids.Ability.Backstab = ids.Rank.BackstabRank3
-	elseif IsSpellKnown(ids.Rank.BackstabRank2) then ids.Ability.Backstab = ids.Rank.BackstabRank2 end
+	if IsSpellKnown(ids.Rank.BackstabRank9) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank9;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank8) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank8;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank7) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank7;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank6) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank6;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank5) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank5;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank4) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank4;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank3) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank3;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank2) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank2;
+		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
+	elseif IsSpellKnown(ids.Rank.BackstabRank1) then
+		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank1; end
+	end
 
 	if IsSpellKnown(ids.Rank.FeintRank4) then ids.Ability.Feint = ids.Rank.FeintRank4
 	elseif IsSpellKnown(ids.Rank.FeintRank3) then ids.Ability.Feint = ids.Rank.FeintRank3

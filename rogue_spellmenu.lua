@@ -170,15 +170,6 @@ function ConROC:RotationChoices()
         groupType = "checkBoxes"
       },
       {
-        frameName = "Finishers",
-        spells = {
-            {spellID = ids.Ability.Eviscerate, spellCheckbox = "Finisher_Eviscerate", reqLevel = 1, type="spell"},
-            {spellID = ids.Runes.BetweentheEyes, spellCheckbox = "Finisher_BetweentheEyes", reqLevel = 1, type="spell"},
-            {spellID = ids.Runes.Envenom, spellCheckbox = "Finisher_Envenom", reqLevel = 1, type="spell"},
-        },
-        groupType = "radioButtons"
-      },
-      {
         frameName = "Stuns",
         spells = {
             {spellID = ids.Ability.Gouge, spellCheckbox = "Stun_Gouge", reqLevel = 6, type="spell"},

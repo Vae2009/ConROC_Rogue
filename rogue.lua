@@ -56,6 +56,7 @@ local _is_moving = ConROC:PlayerSpeed();
 local _enemies_in_melee, _target_in_melee = ConROC:Targets("Melee");
 local _enemies_in_10yrds, _target_in_10yrds = ConROC:Targets("10");
 local _enemies_in_20yrds, _target_in_20yrds = ConROC:Targets("20");
+local _enemies_in_25yrds, _target_in_25yrds = ConROC:Targets("25");
 local _enemies_in_40yrds, _target_in_40yrds = ConROC:Targets("40");
 local _can_Execute = _Target_Percent_Health < 20;
 
@@ -83,6 +84,7 @@ function ConROC:Stats()
 	_enemies_in_melee, _target_in_melee = ConROC:Targets("Melee");
 	_enemies_in_10yrds, _target_in_10yrds = ConROC:Targets("10");
 	_enemies_in_20yrds, _target_in_20yrds = ConROC:Targets("20");
+    _enemies_in_25yrds, _target_in_25yrds = ConROC:Targets("25");
 	_enemies_in_40yrds, _target_in_40yrds = ConROC:Targets("40");
 	_can_Execute = _Target_Percent_Health < 20;
 
@@ -95,48 +97,60 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
 	ConROC:Stats();
 
 --Abilities
+    local _AdrenalineRush, _AdrenalineRush_RDY = ConROC:AbilityReady(Ability.AdrenalineRush, timeShift);
+        local _AdrenalineRush_BUFF = ConROC:Aura(_AdrenalineRush, timeShift);
     local _Ambush, _Ambush_RDY = ConROC:AbilityReady(Ability.Ambush, timeShift);
+        local _Ambush_COST = 60;
+    local _Backstab, _Backstab_RDY = ConROC:AbilityReady(Ability.Backstab, timeShift);
+        local _Backstab_COST = 60;
+    local _BladeFlurry, _BladeFlurry_RDY = ConROC:AbilityReady(Ability.BladeFlurry, timeShift);
+    local _Blind, _Blind_RDY = ConROC:AbilityReady(Ability.Blind, timeShift);
     local _CheapShot, _CheapShot_RDY = ConROC:AbilityReady(Ability.CheapShot, timeShift);
-    local _KidneyShot, _KidneyShot_RDY = ConROC:AbilityReady(Ability.KidneyShot, timeShift);
-    local _Eviscerate, _Eviscerate_RDY = ConROC:AbilityReady(Ability.Eviscerate, timeShift);
+    local _KidneyShot, _KidneyShot_RDY = ConROC:AbilityReady(Ability.KidneyShot, timeShift, "known");
+    local _Eviscerate, _Eviscerate_RDY = ConROC:AbilityReady(Ability.Eviscerate, timeShift, "known");
     local _ColdBlood, _ColdBlood_RDY = ConROC:AbilityReady(Ability.ColdBlood, timeShift);
         local _ColdBlood_BUFF = ConROC:Aura(_ColdBlood, timeShift);
-    local _ExposeArmor, _ExposeArmor_RDY = ConROC:AbilityReady(Ability.ExposeArmor, timeShift);
+    local _ExposeArmor, _ExposeArmor_RDY = ConROC:AbilityReady(Ability.ExposeArmor, timeShift, "known");
         local _ExposeArmor_DEBUFF = ConROC:TargetAura(_ExposeArmor, timeShift);
     local _Garrote, _Garrote_RDY = ConROC:AbilityReady(Ability.Garrote, timeShift);
         local _Garrote_DEBUFF, _, _Garrote_DUR = ConROC:TargetAura(_Garrote, timeShift);
-    local _Rupture, _Rupture_RDY = ConROC:AbilityReady(Ability.Rupture, timeShift);
-        local _Rupture_DEBUFF, _, _Rupture_DUR = ConROC:TargetAura(_Rupture, timeShift);
-    local _SliceandDice, _SliceandDice_RDY = ConROC:AbilityReady(Ability.SliceandDice, timeShift);
-        local _SliceandDice_BUFF, _, _SliceandDice_DUR = ConROC:Aura(_SliceandDice, timeShift);
-    local _AdrenalineRush, _AdrenalineRush_RDY = ConROC:AbilityReady(Ability.AdrenalineRush, timeShift);
-        local _AdrenalineRush_BUFF = ConROC:Aura(_AdrenalineRush, timeShift);
-    local _Backstab, _Backstab_RDY = ConROC:AbilityReady(Ability.Backstab, timeShift);
-    local _BladeFlurry, _BladeFlurry_RDY = ConROC:AbilityReady(Ability.BladeFlurry, timeShift);
-    local _Gouge, _Gouge_RDY = ConROC:AbilityReady(Ability.Gouge, timeShift);
-    local _Kick, _Kick_RDY = ConROC:AbilityReady(Ability.Kick, timeShift);
-    local _SinisterStrike, _SinisterStrike_RDY = ConROC:AbilityReady(Ability.SinisterStrike, timeShift);
-    local _Sprint, _Sprint_RDY = ConROC:AbilityReady(Ability.Sprint, timeShift);
     local _GhostlyStrike, _GhostlyStrike_RDY = ConROC:AbilityReady(Ability.GhostlyStrike, timeShift);
+    local _Gouge, _Gouge_RDY = ConROC:AbilityReady(Ability.Gouge, timeShift);
     local _Hemorrhage, _Hemorrhage_RDY = ConROC:AbilityReady(Ability.Hemorrhage, timeShift);
         local _Hemorrhage_DEBUFF = ConROC:TargetAura(_Hemorrhage, timeShift);
+    local _Kick, _Kick_RDY = ConROC:AbilityReady(Ability.Kick, timeShift);
     local _Premeditation, _Premeditation_RDY = ConROC:AbilityReady(Ability.Premeditation, timeShift);
     local _Preparation, _Preparation_RDY = ConROC:AbilityReady(Ability.Preparation, timeShift);
-    local _Vanish, _Vanish_RDY = ConROC:AbilityReady(Ability.Vanish, timeShift);
     local _Riposte, _Riposte_RDY = ConROC:AbilityReady(Ability.Riposte, timeShift);
-    local _Blind, _Blind_RDY = ConROC:AbilityReady(Ability.Blind, timeShift);
+    local _Rupture, _Rupture_RDY = ConROC:AbilityReady(Ability.Rupture, timeShift, "known");
+        local _Rupture_DEBUFF, _, _Rupture_DUR = ConROC:TargetAura(_Rupture, timeShift);
+    local _SinisterStrike, _SinisterStrike_RDY = ConROC:AbilityReady(Ability.SinisterStrike, timeShift);
+    local _SliceandDice, _SliceandDice_RDY = ConROC:AbilityReady(Ability.SliceandDice, timeShift, "known");
+        local _SliceandDice_BUFF, _, _SliceandDice_DUR = ConROC:Aura(_SliceandDice, timeShift);
+    local _Sprint, _Sprint_RDY = ConROC:AbilityReady(Ability.Sprint, timeShift);
+    local _Vanish, _Vanish_RDY = ConROC:AbilityReady(Ability.Vanish, timeShift);
+
  --Runes
-    local _Shadowstrike, _Shadowstrike_RDY = ConROC:AbilityReady(Runes.Shadowstrike, timeShift);
-    local _SaberSlash, _SaberSlash_RDY = ConROC:AbilityReady(Runes.SaberSlash, timeShift);
-        local _SaberSlash_DEBUFF, _SaberSlash_COUNT = ConROC:TargetAura(_SaberSlash, timeShift);
-    local _Mutilate, _Mutilate_RDY = ConROC:AbilityReady(Runes.Mutilate, timeShift);
-    local _Envenom, _Envenom_RDY = ConROC:AbilityReady(Runes.Envenom, timeShift);
-    local _Tease, _Tease_RDY = ConROC:AbilityReady(Runes.Tease, timeShift);
-    local _QuickDraw, _QuickDraw_RDY = ConROC:AbilityReady(Runes.QuickDraw, timeShift);
-    local _MainGauche, _MainGauche_RDY = ConROC:AbilityReady(Runes.MainGauche, timeShift);
-        local _MainGauche_BUFF = ConROC:Aura(_MainGauche, timeShift);
-    local _BladeDance, _BladeDance_RDY = ConROC:AbilityReady(Runes.BladeDance, timeShift);
+    local _BetweentheEyes, _BetweentheEyes_RDY = ConROC:AbilityReady(Runes.BetweentheEyes, timeShift, "known");
+    local _BladeDance, _BladeDance_RDY = ConROC:AbilityReady(Runes.BladeDance, timeShift, "known");
         local _BladeDance_BUFF = ConROC:Aura(_BladeDance, timeShift);
+    local _Blunderbuss, _Blunderbuss_RDY = ConROC:AbilityReady(Runes.Blunderbuss, timeShift);
+    local _CrimsonTempest, _CrimsonTempest_RDY = ConROC:AbilityReady(Runes.CrimsonTempest, timeShift, "known");
+        local _CrimsonTempest_DEBUFF, _, _CrimsonTempest_DUR = ConROC:TargetAura(_CrimsonTempest, timeShift);
+        local _Cutthroat_BUFF = ConROC:Aura(Buff.Cutthroat, timeShift);
+    local _Envenom, _Envenom_RDY = ConROC:AbilityReady(Runes.Envenom, timeShift, "known");
+    local _MainGauche, _MainGauche_RDY = ConROC:AbilityReady(Runes.MainGauche, timeShift);
+        local _MainGauche_BUFF = ConROC:Aura(Buff.MainGauche, timeShift);
+    local _Mutilate, _Mutilate_RDY = ConROC:AbilityReady(Runes.Mutilate, timeShift);
+    local _PoisonedKnife, _PoisonedKnife_RDY = ConROC:AbilityReady(Runes.PoisonedKnife, timeShift);
+    local _QuickDraw, _QuickDraw_RDY = ConROC:AbilityReady(Runes.QuickDraw, timeShift);
+    local _SaberSlash, _SaberSlash_RDY = ConROC:AbilityReady(Runes.SaberSlash, timeShift);
+        local _, _SaberSlash_COUNT, _SaberSlash_DUR = ConROC:TargetAura(_SaberSlash, timeShift);
+    local _Shadowstep, _Shadowstep_RDY = ConROC:AbilityReady(Runes.Shadowstep, timeShift);
+        local _, _Shadowstep_RANGE = ConROC:Targets(_Shadowstep);
+    local _Shadowstrike, _Shadowstrike_RDY = ConROC:AbilityReady(Runes.Shadowstrike, timeShift);
+    local _ShurikenToss, _ShurikenToss_RDY = ConROC:AbilityReady(Runes.ShurikenToss, timeShift);
+    local _Tease, _Tease_RDY = ConROC:AbilityReady(Runes.Tease, timeShift);
 
 --Conditions
     local _Resting = IsResting();
@@ -146,6 +160,25 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
     local poisonMH, _, _, _, poisonOH = GetWeaponEnchantInfo()
     local mhExp = 0
     local ohExp = 0
+    local _Improved_SinisterStrike, _Improved_SinisterStrike_RANK = ConROC:TalentChosen(Spec.Combat, Com_Talent.ImprovedSinisterStrike)
+    local _SinisterStrike_REDUCTION = 0;
+
+    if _Improved_SinisterStrike then
+        if _Improved_SinisterStrike_RANK == 2 then
+            _SinisterStrike_REDUCTION = 5;
+        elseif _Improved_SinisterStrike_RANK == 1 then
+            _SinisterStrike_REDUCTION = 3;
+        end
+    end
+
+    if _MainGauche_BUFF then
+        _SinisterStrike_REDUCTION = _SinisterStrike_REDUCTION + 20;
+    end
+
+    if ConROC:RuneEquipped(ids.Engrave.SlaughterfromtheShadows, "chest") then
+        _Ambush_COST = _Ambush_COST - 30;
+        _Backstab_COST = _Backstab_COST - 30;
+    end
 
  --Indicators
     ConROC:AbilityBurst(_AdrenalineRush, _AdrenalineRush_RDY and _in_combat and _Energy_PERCENT <= 40)
@@ -154,6 +187,7 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
     ConROC:AbilityBurst(_Gouge, ConROC:CheckBox(ConROC_SM_Stun_Gouge) and _Gouge_RDY and not _Rupture_DEBUFF and not _Garrote_DEBUFF and _in_combat and ConROC:TarYou())
     ConROC:AbilityBurst(_Blind, ConROC:CheckBox(ConROC_SM_Stun_Blind) and _Blind_RDY and not _Rupture_DEBUFF and not _Garrote_DEBUFF and _in_combat and ConROC:TarYou())
 
+    ConROC:AbilityMovement(_Shadowstep, _Shadowstep_RDY and _target_in_25yrds);
     ConROC:AbilityInterrupt(_Kick, ConROC:Interrupt() and _Kick_RDY)
 
 --Warnings
@@ -388,93 +422,205 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
     repeat
         while(true) do
             if ConROC.Seasons.IsSoD then
-                if ConROC:CheckBox(ConROC_SM_Role_Tank) then
-                    if _is_stealthed then
-                        if ConROC:CheckBox(ConROC_SM_Debuff_Garrote) and _Garrote_RDY and not _Garrote_DEBUFF then
-                            tinsert(ConROC.SuggestedSpells, _Garrote);
-                            _Garrote_DEBUFF = true;
-                            _Combo = _Combo + 1;
-                            _is_stealthed = false;
+                if ConROC:CheckBox(ConROC_SM_Role_Tank) or ConROC:RuneEquipped(ids.Engrave.JustaFleshWound, "chest") then
+                    if _ShurikenToss_RDY and _Energy >= 30 and not _target_in_melee then
+                        tinsert(ConROC.SuggestedSpells, _ShurikenToss);
+                        _ShurikenToss_RDY = false;
+                        _Energy = _Energy - 30;
+                        _Combo = _Combo + 1;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if ConROC:CheckBox(ConROC_SM_Buff_BladeDance) and _BladeDance_RDY and _Energy >= 25 and _Combo > 3 and _BladeDance_DUR < 10 then
+                        tinsert(ConROC.SuggestedSpells, _BladeDance);
+                        _BladeDance_BUFF = true;
+                        _BladeDance_DUR = 22;
+                        _Energy = _Energy - 25;
+                        _Combo = 0;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _Riposte_RDY and _Energy >= 10 then
+                        tinsert(ConROC.SuggestedSpells, _Riposte);
+                        _Riposte_RDY = false;
+                        _Energy = _Energy - 10;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _BladeFlurry_RDY and _Energy >= 25 and _SliceandDice_BUFF and (not ConROC:RuneEquipped(ids.Engrave.SaberSlash, "hands") or (ConROC:RuneEquipped(ids.Engrave.SaberSlash, "hands") and _SaberSlash_COUNT >= 3)) then
+                        tinsert(ConROC.SuggestedSpells, _BladeFlurry);
+                        _BladeFlurry_RDY = false;
+                        _Energy = _Energy - 25;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _Ambush_RDY and _Energy >= _Ambush_COST and _Cutthroat_BUFF and hasDagger then
+                        tinsert(ConROC.SuggestedSpells, _Ambush);
+                        _Cutthroat_BUFF = false;
+                        _Energy = _Energy - _Ambush_COST;
+                        _Combo = _Combo + 1;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _MainGauche_RDY and _Energy >= 15 then
+                        tinsert(ConROC.SuggestedSpells, _MainGauche);
+                        _MainGauche_BUFF = true;
+                        _Combo = _Combo + 1;
+                        _Energy = _Energy - 15;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _SaberSlash_RDY and (_SaberSlash_COUNT <= 3 or _SaberSlash_DUR <= 2) and _Combo <= _Combo_Max - 1 and _Energy >= (45 - _SinisterStrike_REDUCTION) then
+                        tinsert(ConROC.SuggestedSpells, _SaberSlash);
+                        _Combo = _Combo + 1;
+                        _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                        _SaberSlash_COUNT = _SaberSlash_COUNT + 1;
+                        _SaberSlash_DUR = 12;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if ConROC:RuneEquipped(ids.Engrave.CuttotheChase, "wrist") then
+                        if ConROC:CheckBox(ConROC_SM_Buff_BladeDance) and _BladeDance_RDY and _Energy >= 25 and _Combo > 1 and not _BladeDance_BUFF then
+                            tinsert(ConROC.SuggestedSpells, _BladeDance);
+                            _BladeDance_BUFF = true;
+                            _BladeDance_DUR = 14;
+                            _Energy = _Energy - 25;
+                            _Combo = 0;
                             _Queue = _Queue + 1;
                             break;
                         end
 
-                        if _Ambush_RDY and hasDagger then
-                            tinsert(ConROC.SuggestedSpells, _Ambush);
-                            _is_stealthed = false;
-                            _Combo = _Combo + 1;
-                            _Queue = _Queue + 1;
-                            break;
-                        end
-
-                        if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
-                            tinsert(ConROC.SuggestedSpells, _Backstab);
-                            _is_stealthed = false;
-                            _Combo = _Combo + 1;
-                            _Queue = _Queue + 1;
-                            break;
-                        end
-
-                        if _Shadowstrike_RDY and not (_Ambush_RDY and _Backstab_RDY) then
-                            tinsert(ConROC.SuggestedSpells, _Shadowstrike);
-                            _is_stealthed = false;
-                            _Combo = _Combo + 1;
+                        if ConROC:CheckBox(ConROC_SM_Buff_SliceandDice) and _SliceandDice_RDY and _Energy >= 25 and _Combo >= 3 and not _SliceandDice_BUFF then
+                            tinsert(ConROC.SuggestedSpells, _SliceandDice);
+                            _SliceandDice_BUFF = true;
+                            _SliceandDice_DUR = 15;
+                            _Energy = _Energy - 25;
+                            _Combo = 0;
                             _Queue = _Queue + 1;
                             break;
                         end
                     else
-                        if _Riposte_RDY then
-                            tinsert(ConROC.SuggestedSpells, _Riposte);
-                            _Riposte_RDY = false;
-                            _Queue = _Queue + 1;
-                            break;
-                        end
-
-                        if _MainGauche_RDY and not _MainGauche_BUFF then
-                            tinsert(ConROC.SuggestedSpells, _MainGauche);
-                            _MainGauche_BUFF = true;
-                            _Combo = _Combo + 1;
-                            _Queue = _Queue + 1;
-                            break;
-                        end
-
-                        if _SinisterStrike_RDY and (_Combo < 1) then
-                            tinsert(ConROC.SuggestedSpells, _SinisterStrike);
-                            _Combo =  _Combo + 1;
-                            _Queue = _Queue + 1;
-                            break;
-                        end
-
-                        if _BladeDance_RDY and not _BladeDance_BUFF then
+                        if ConROC:CheckBox(ConROC_SM_Buff_BladeDance) and _BladeDance_RDY and _Energy >= 25 and _Combo >= 3 and not _BladeDance_BUFF then
                             tinsert(ConROC.SuggestedSpells, _BladeDance);
                             _BladeDance_BUFF = true;
+                            _BladeDance_DUR = 22;
+                            _Energy = _Energy - 25;
                             _Combo = 0;
                             _Queue = _Queue + 1;
                             break;
                         end
 
-                        if _SinisterStrike_RDY and _Combo <= _Combo_Max - 1 then
-                            tinsert(ConROC.SuggestedSpells, _SinisterStrike);
-                            _Combo =  _Combo + 1;
-                            _Queue = _Queue + 1;
-                            break;
-                        end
-
-                        if _BladeDance_RDY and not _BladeDance_BUFF then
-                            tinsert(ConROC.SuggestedSpells, _BladeDance);
-                            _BladeDance_BUFF = true;
-                            _Combo = 0;
-                            _Queue = _Queue + 1;
-                            break;
-                        end
-
-                        if _SliceandDice_RDY and not _SliceandDice_BUFF then
+                        if ConROC:CheckBox(ConROC_SM_Buff_SliceandDice) and _SliceandDice_RDY and _Energy >= 25 and _Combo >= 4 and not _SliceandDice_BUFF then
                             tinsert(ConROC.SuggestedSpells, _SliceandDice);
                             _SliceandDice_BUFF = true;
+                            _SliceandDice_DUR = 18;
+                            _Energy = _Energy - 25;
                             _Combo = 0;
                             _Queue = _Queue + 1;
                             break;
                         end
+                    end
+
+                    if _CrimsonTempest_RDY and _Energy >= 35 and _Combo >= 4 and not _CrimsonTempest_DEBUFF then
+                        tinsert(ConROC.SuggestedSpells, _CrimsonTempest);
+                        _CrimsonTempest_DEBUFF = true;
+                        _Energy = _Energy - 35;
+                        _Combo = 0;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _Blunderbuss_RDY and _Energy >= 20 and _target_in_10yrds then
+                        tinsert(ConROC.SuggestedSpells, _Blunderbuss);
+                        _Blunderbuss_RDY = false;
+                        _Energy = _Energy - 20;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and _ExposeArmor_RDY and not _ExposeArmor_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 20 then
+                        tinsert(ConROC.SuggestedSpells, _ExposeArmor);
+                        _ExposeArmor_DEBUFF = true;
+                        _Combo = 0;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and _Rupture_RDY and not _Rupture_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 15 then
+                        tinsert(ConROC.SuggestedSpells, _Rupture);
+                        _Rupture_DEBUFF = true;
+                        _Combo = 0;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _BetweentheEyes_RDY and _Energy >= 35 and (_Combo >= 5 or (_Combo >= 4 and _Energy >= 60 and _AdrenalineRush_BUFF)) then
+                        tinsert(ConROC.SuggestedSpells, _BetweentheEyes);
+                        _BetweentheEyes_RDY = false;
+                        _Energy = _Energy - 35;
+                        _Combo = 0;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if ConROC:RuneEquipped(ids.Engrave.Envenom, "legs") then
+                        if _Envenom_RDY and _Energy >= 35 and (_Combo >= 5 or (_Combo >= 4 and _Energy >= 60 and _AdrenalineRush_BUFF)) then
+                            tinsert(ConROC.SuggestedSpells, _Envenom);
+                            _Energy = _Energy - 35;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+                    else
+                        if _Eviscerate_RDY and _Energy >= 35 and (_Combo >= 5 or (_Combo >= 4 and _Energy >= 60 and _AdrenalineRush_BUFF)) then
+                            tinsert(ConROC.SuggestedSpells, _Eviscerate);
+                            _Energy = _Energy - 35;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+                    end
+
+                    if _GhostlyStrike_RDY and _Energy >= 40 and _Combo <= _Combo_Max - 1 and ConROC:TarYou() then
+                        tinsert(ConROC.SuggestedSpells, _GhostlyStrike);
+                        _GhostlyStrike_RDY = false;
+                        _Energy = _Energy - 40;
+                        _Combo = _Combo + 1;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _Mutilate_RDY and _Combo <= _Combo_Max - 2 and _Energy >= 40 then
+                        tinsert(ConROC.SuggestedSpells, _Mutilate);
+                        _Energy = _Energy - 40;
+                        _Combo = _Combo + 2;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _SaberSlash_RDY and _Combo <= _Combo_Max - 1 and _Energy >= 70 then
+                        tinsert(ConROC.SuggestedSpells, _SaberSlash);
+                        _Combo = _Combo + 1;
+                        _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                        _SaberSlash_COUNT = _SaberSlash_COUNT + 1;
+                        _SaberSlash_DUR = 12;
+                        _Queue = _Queue + 1;
+                        break;
+                    end
+
+                    if _SinisterStrike_RDY and _Combo <= _Combo_Max - 1 and _Energy >= 70 then
+                        tinsert(ConROC.SuggestedSpells, _SinisterStrike);
+                        _Combo =  _Combo + 1;
+                        _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                        _Queue = _Queue + 1;
+                        break;
                     end
                 else
                     if _is_stealthed then
@@ -500,9 +646,10 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                             break;
                         end
 
-                        if _Ambush_RDY and hasDagger then
+                        if _Ambush_RDY and _Energy >= _Ambush_COST and hasDagger then
                             tinsert(ConROC.SuggestedSpells, _Ambush);
                             _is_stealthed = false;
+                            _Energy = _Energy - _Ambush_COST;
                             _Combo = _Combo + 1;
                             _Queue = _Queue + 1;
                             break;
@@ -516,126 +663,209 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                             break;
                         end
 
-                        if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
+                        if _Mutilate_RDY and _Energy >= 40 and _Combo <= _Combo_Max - 2 then
+                            tinsert(ConROC.SuggestedSpells, _Mutilate);
+                            _Energy = _Energy - 40;
+                            _Combo = _Combo + 2;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+
+                        if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") and _Backstab_RDY and _Energy >= _Backstab_COST and hasDagger and _Combo <= _Combo_Max - 1 then
                             tinsert(ConROC.SuggestedSpells, _Backstab);
-                            _is_stealthed = false;
+                            _Energy = _Energy - _Backstab_COST;
                             _Combo = _Combo + 1;
                             _Queue = _Queue + 1;
                             break;
                         end
 
-                        if _SinisterStrike_RDY and not hasDagger then
+                        if _SaberSlash_RDY and _Energy >= 75 and _Combo <= _Combo_Max - 1 then
+                            tinsert(ConROC.SuggestedSpells, _SaberSlash);
+                            _Combo = _Combo + 1;
+                            _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                            _SaberSlash_COUNT = _SaberSlash_COUNT + 1;
+                            _SaberSlash_DUR = 12;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+
+                        if _SinisterStrike_RDY and _Energy >= 75 and _Combo <= _Combo_Max - 1 then
                             tinsert(ConROC.SuggestedSpells, _SinisterStrike);
-                            _is_stealthed = false;
+                            _Combo = _Combo + 1;
+                            _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+                    else
+                        if _Riposte_RDY and _Energy >= 10 then
+                            tinsert(ConROC.SuggestedSpells, _Riposte);
+                            _Riposte_RDY = false;
+                            _Energy = _Energy - 10;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+
+                        if _Ambush_RDY and _Energy >= _Ambush_COST and _Cutthroat_BUFF and hasDagger then
+                            tinsert(ConROC.SuggestedSpells, _Ambush);
+                            _Cutthroat_BUFF = false;
+                            _Energy = _Energy - _Ambush_COST;
                             _Combo = _Combo + 1;
                             _Queue = _Queue + 1;
                             break;
                         end
-                    end
 
-                    if _Riposte_RDY then
-                        tinsert(ConROC.SuggestedSpells, _Riposte);
-                        _Riposte_RDY = false;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if _PoisonedKnife_RDY and _Energy >= 25 and _Combo <= _Combo_Max - 1 then
+                            tinsert(ConROC.SuggestedSpells, _PoisonedKnife);
+                            _PoisonedKnife_RDY = false;
+                            _Energy = _Energy - 25;
+                            _Combo = _Combo + 1;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if _SaberSlash_RDY and _SaberSlash_COUNT <= 3 and _Combo <= _Combo_Max - 1 then
-                        tinsert(ConROC.SuggestedSpells, _SaberSlash);
-                        _Combo = _Combo + 1;
-                        _SaberSlash_COUNT = _SaberSlash_COUNT + 1;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if _SaberSlash_RDY and (_SaberSlash_COUNT <= 3 or _SaberSlash_DUR <= 2) and _Combo <= _Combo_Max - 1 and _Energy >= (45 - _SinisterStrike_REDUCTION) then
+                            tinsert(ConROC.SuggestedSpells, _SaberSlash);
+                            _Combo = _Combo + 1;
+                            _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                            _SaberSlash_COUNT = _SaberSlash_COUNT + 1;
+                            _SaberSlash_DUR = 12;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if _Mutilate_RDY and _Combo <= _Combo_Max - 2 then
-                        tinsert(ConROC.SuggestedSpells, _Mutilate);
-                        _Combo = _Combo + 2;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if _BladeFlurry_RDY and _enemies_in_melee >= 2 then
+                            tinsert(ConROC.SuggestedSpells, _BladeFlurry);
+                            _BladeFlurry_RDY = false;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if ConROC:CheckBox(ConROC_SM_Buff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
-                        tinsert(ConROC.SuggestedSpells, _SliceandDice);
-                        _SliceandDice_BUFF = true;
-                        _SliceandDice_DUR = 21;
-                        _Combo = 0;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if _CrimsonTempest_RDY and _Energy >= 35 and _Combo >= 4 and not _CrimsonTempest_DEBUFF and _enemies_in_melee >= 3 then
+                            tinsert(ConROC.SuggestedSpells, _CrimsonTempest);
+                            _CrimsonTempest_DEBUFF = true;
+                            _Energy = _Energy - 35;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if _Envenom_RDY and _SliceandDice_BUFF and _Combo == _Combo_Max then
-                        tinsert(ConROC.SuggestedSpells, _Envenom);
-                        _Combo = 0;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if _Blunderbuss_RDY and _Energy >= 20 and _target_in_10yrds then
+                            tinsert(ConROC.SuggestedSpells, _Blunderbuss);
+                            _Blunderbuss_RDY = false;
+                            _Energy = _Energy - 20;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and _KidneyShot_RDY and _Combo == _Combo_Max then
-                        tinsert(ConROC.SuggestedSpells, _KidneyShot);
-                        _KidneyShot_RDY = false;
-                        _Combo = 0;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if ConROC:CheckBox(ConROC_SM_Buff_SliceandDice) and _SliceandDice_RDY and ((_Combo >= 1 and not _SliceandDice_BUFF) or (_Combo == _Combo_Max and ((_SliceandDice_DUR <= 10 and not _AdrenalineRush_BUFF) or (_AdrenalineRush_BUFF and _SliceandDice_DUR <= 5)))) then
+                            tinsert(ConROC.SuggestedSpells, _SliceandDice);
+                            _SliceandDice_BUFF = true;
+                            _SliceandDice_DUR = 21;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and _ExposeArmor_RDY and not _ExposeArmor_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 20 then
-                        tinsert(ConROC.SuggestedSpells, _ExposeArmor);
-                        _ExposeArmor_DEBUFF = true;
-                        _Combo = 0;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if ConROC:CheckBox(ConROC_SM_Stun_KidneyShot) and _KidneyShot_RDY and _Combo == _Combo_Max then
+                            tinsert(ConROC.SuggestedSpells, _KidneyShot);
+                            _KidneyShot_RDY = false;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and _Rupture_RDY and not _Rupture_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 15 then
-                        tinsert(ConROC.SuggestedSpells, _Rupture);
-                        _Rupture_DEBUFF = true;
-                        _Combo = 0;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if ConROC:CheckBox(ConROC_SM_Debuff_ExposeArmor) and _ExposeArmor_RDY and not _ExposeArmor_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 15 then
+                            tinsert(ConROC.SuggestedSpells, _ExposeArmor);
+                            _ExposeArmor_DEBUFF = true;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if _BladeFlurry_RDY and _enemies_in_melee >= 2 then
-                        tinsert(ConROC.SuggestedSpells, _BladeFlurry);
-                        _BladeFlurry_RDY = false;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if ConROC:CheckBox(ConROC_SM_Debuff_Rupture) and _Rupture_RDY and not _Rupture_DEBUFF and _Combo == _Combo_Max and _Target_Percent_Health >= 15 then
+                            tinsert(ConROC.SuggestedSpells, _Rupture);
+                            _Rupture_DEBUFF = true;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if _Eviscerate_RDY and (_Combo == _Combo_Max or (_Combo >= 1 and ((_Target_Percent_Health <= 5 and ConROC:Raidmob()) or (_Target_Percent_Health <= 20 and not ConROC:Raidmob())))) then
-                        tinsert(ConROC.SuggestedSpells, _Eviscerate);
-                        _Combo = 0;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if _BetweentheEyes_RDY and _Energy >= 35 and (_Combo >= 5 or (_Combo >= 4 and _Energy >= 60 and _AdrenalineRush_BUFF)) then
+                            tinsert(ConROC.SuggestedSpells, _BetweentheEyes);
+                            _BetweentheEyes_RDY = false;
+                            _Energy = _Energy - 35;
+                            _Combo = 0;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and _Hemorrhage_RDY and not _Hemorrhage_DEBUFF then
-                        tinsert(ConROC.SuggestedSpells, _Hemorrhage);
-                        _Hemorrhage_DEBUFF = true;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if ConROC:RuneEquipped(ids.Engrave.Envenom, "legs") then
+                            if _Envenom_RDY and _Energy >= 35 and (_Combo >= 5 or (_Combo >= 4 and _Energy >= 60 and _AdrenalineRush_BUFF)) then
+                                tinsert(ConROC.SuggestedSpells, _Envenom);
+                                _Energy = _Energy - 35;
+                                _Combo = 0;
+                                _Queue = _Queue + 1;
+                                break;
+                            end
+                        else
+                            if _Eviscerate_RDY and _Energy >= 35 and (_Combo >= 5 or (_Combo >= 4 and _Energy >= 60 and _AdrenalineRush_BUFF)) then
+                                tinsert(ConROC.SuggestedSpells, _Eviscerate);
+                                _Energy = _Energy - 35;
+                                _Combo = 0;
+                                _Queue = _Queue + 1;
+                                break;
+                            end
+                        end
 
-                    if _Backstab_RDY and hasDagger and _Combo <= _Combo_Max - 1 and not ConROC:TarYou() then
-                        tinsert(ConROC.SuggestedSpells, _Backstab);
-                        _Combo = _Combo + 1;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if ConROC:CheckBox(ConROC_SM_Debuff_Hemorrhage) and _Hemorrhage_RDY and not _Hemorrhage_DEBUFF then
+                            tinsert(ConROC.SuggestedSpells, _Hemorrhage);
+                            _Hemorrhage_DEBUFF = true;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if _GhostlyStrike_RDY and ConROC:TarYou() then
-                        tinsert(ConROC.SuggestedSpells, _GhostlyStrike);
-                        _GhostlyStrike_RDY = false;
-                        _Combo = _Combo + 1;
-                        _Queue = _Queue + 1;
-                        break;
-                    end
+                        if _GhostlyStrike_RDY and _Energy >= 40 and _Combo <= _Combo_Max - 1 and ConROC:TarYou() then
+                            tinsert(ConROC.SuggestedSpells, _GhostlyStrike);
+                            _GhostlyStrike_RDY = false;
+                            _Energy = _Energy - 40;
+                            _Combo = _Combo + 1;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
 
-                    if _SinisterStrike_RDY and _Combo <= _Combo_Max - 1 and (not hasDagger or ConROC:TarYou()) then
-                        tinsert(ConROC.SuggestedSpells, _SinisterStrike);
-                        _Combo = _Combo + 1;
-                        _Queue = _Queue + 1;
-                        break;
+                        if _Mutilate_RDY and _Energy >= 40 and _Combo <= _Combo_Max - 2 then
+                            tinsert(ConROC.SuggestedSpells, _Mutilate);
+                            _Energy = _Energy - 40;
+                            _Combo = _Combo + 2;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+
+                        if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") and _Backstab_RDY and _Energy >= _Backstab_COST and hasDagger and _Combo <= _Combo_Max - 1 then
+                            tinsert(ConROC.SuggestedSpells, _Backstab);
+                            _Energy = _Energy - _Backstab_COST;
+                            _Combo = _Combo + 1;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+
+                        if _SaberSlash_RDY and _Energy >= 75 and _Combo <= _Combo_Max - 1 then
+                            tinsert(ConROC.SuggestedSpells, _SaberSlash);
+                            _Combo = _Combo + 1;
+                            _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                            _SaberSlash_COUNT = _SaberSlash_COUNT + 1;
+                            _SaberSlash_DUR = 12;
+                            _Queue = _Queue + 1;
+                            break;
+                        end
+
+                        if _SinisterStrike_RDY and _Energy >= 75 and _Combo <= _Combo_Max - 1 then
+                            tinsert(ConROC.SuggestedSpells, _SinisterStrike);
+                            _Combo = _Combo + 1;
+                            _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
+                            _Queue = _Queue + 1;
+                            break;
+                        end
                     end
                 end
             else--not SoD
@@ -654,9 +884,10 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                         break;
                     end
 
-                    if _Ambush_RDY and hasDagger then
+                    if _Ambush_RDY and _Energy >= _Ambush_COST and hasDagger then
                         tinsert(ConROC.SuggestedSpells, _Ambush);
                         _is_stealthed = false;
+                        _Energy = _Energy - _Ambush_COST;
                         _Queue = _Queue + 1;
                         break;
                     end
@@ -669,18 +900,20 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                         break;
                     end
 
-                    if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
+                    if _Backstab_RDY and _Energy >= _Backstab_COST and hasDagger and not ConROC:TarYou() then
                         tinsert(ConROC.SuggestedSpells, _Backstab);
                         _is_stealthed = false;
+                        _Energy = _Energy - _Backstab_COST;
                         _Combo = _Combo + 1;
                         _Queue = _Queue + 1;
                         break;
                     end
 
-                    if _SinisterStrike_RDY and not hasDagger then
+                    if _SinisterStrike_RDY and not hasDagger and _Energy >= (45 - _SinisterStrike_REDUCTION) then
                         tinsert(ConROC.SuggestedSpells, _SinisterStrike);
                         _is_stealthed = false;
                         _Combo = _Combo + 1;
+                        _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
                         _Queue = _Queue + 1;
                         break;
                     end
@@ -748,8 +981,9 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                     break;
                 end
 
-                if _Backstab_RDY and hasDagger and not ConROC:TarYou() then
+                if _Backstab_RDY and _Energy >= _Backstab_COST and hasDagger and not ConROC:TarYou() then
                     tinsert(ConROC.SuggestedSpells, _Backstab);
+                    _Energy = _Energy - _Backstab_COST;
                     _Combo = _Combo + 1;
                     _Queue = _Queue + 1;
                     break;
@@ -763,9 +997,10 @@ function ConROC.Rogue.Damage(_, timeShift, currentSpell, gcd)
                     break;
                 end
 
-                if _SinisterStrike_RDY and (not hasDagger or ConROC:TarYou()) then
+                if _SinisterStrike_RDY and _Energy >= (45 - _SinisterStrike_REDUCTION) and (not hasDagger or ConROC:TarYou()) then
                     tinsert(ConROC.SuggestedSpells, _SinisterStrike);
                     _Combo = _Combo + 1;
+                    _Energy = _Energy - (45 - _SinisterStrike_REDUCTION);
                     _Queue = _Queue + 1;
                     break;
                 end
