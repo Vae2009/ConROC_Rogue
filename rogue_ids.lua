@@ -302,23 +302,20 @@ ids.ActivePoison = { -- list of EnchantId and Poison name to map against Poisons
 
 function ConROC:UpdateSpellID()
 	--Ranks
-	if IsSpellKnown(ids.Rank.AmbushRank6) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank6;
-		else ids.Ability.Ambush = ids.Rank.AmbushRank6; end
-	elseif IsSpellKnown(ids.Rank.AmbushRank5) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank5;
-		else ids.Ability.Ambush = ids.Rank.AmbushRank5; end
-	elseif IsSpellKnown(ids.Rank.AmbushRank4) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank4;
-		else ids.Ability.Ambush = ids.Rank.AmbushRank4; end
-	elseif IsSpellKnown(ids.Rank.AmbushRank3) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank3;
-		else ids.Ability.Ambush = ids.Rank.AmbushRank3; end
-	elseif IsSpellKnown(ids.Rank.AmbushRank2) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank2;
-		else ids.Ability.Ambush = ids.Rank.AmbushRank2; end
-	elseif IsSpellKnown(ids.Rank.AmbushRank1) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Ambush = ids.Rank.AmbushSoDRank1; end
+	if ConROC.Seasons.IsSoD and ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then 
+		if IsSpellKnown(ids.Rank.AmbushRank6) then ids.Ability.Ambush = ids.Rank.AmbushSoDRank6;
+		elseif IsSpellKnown(ids.Rank.AmbushRank5) then ids.Ability.Ambush = ids.Rank.AmbushSoDRank5;
+		elseif IsSpellKnown(ids.Rank.AmbushRank4) then ids.Ability.Ambush = ids.Rank.AmbushSoDRank4;
+		elseif IsSpellKnown(ids.Rank.AmbushRank3) then ids.Ability.Ambush = ids.Rank.AmbushSoDRank3;
+		elseif IsSpellKnown(ids.Rank.AmbushRank2) then ids.Ability.Ambush = ids.Rank.AmbushSoDRank2;
+		elseif IsSpellKnown(ids.Rank.AmbushRank1) then ids.Ability.Ambush = ids.Rank.AmbushSoDRank1; end
+	else 
+		if IsSpellKnown(ids.Rank.AmbushRank6) then ids.Ability.Ambush = ids.Rank.AmbushRank6;
+		elseif IsSpellKnown(ids.Rank.AmbushRank5) then ids.Ability.Ambush = ids.Rank.AmbushRank5;
+		elseif IsSpellKnown(ids.Rank.AmbushRank4) then ids.Ability.Ambush = ids.Rank.AmbushRank4;
+		elseif IsSpellKnown(ids.Rank.AmbushRank3) then ids.Ability.Ambush = ids.Rank.AmbushRank3;
+		elseif IsSpellKnown(ids.Rank.AmbushRank2) then ids.Ability.Ambush = ids.Rank.AmbushRank2;
+		elseif IsSpellKnown(ids.Rank.AmbushRank1) then ids.Ability.Ambush = ids.Rank.AmbushRank1; end
 	end
 
 	if IsSpellKnown(ids.Rank.EviscerateRank8) then ids.Ability.Eviscerate = ids.Rank.EviscerateRank8
@@ -334,23 +331,20 @@ function ConROC:UpdateSpellID()
 	elseif IsSpellKnown(ids.Rank.ExposeArmorRank3) then ids.Ability.ExposeArmor = ids.Rank.ExposeArmorRank3;
 	elseif IsSpellKnown(ids.Rank.ExposeArmorRank2) then ids.Ability.ExposeArmor = ids.Rank.ExposeArmorRank2; end
 
-	if IsSpellKnown(ids.Rank.GarroteRank6) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank6;
-		else ids.Ability.Garrote = ids.Rank.GarroteRank6; end
-	elseif IsSpellKnown(ids.Rank.GarroteRank5) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank5;
-		else ids.Ability.Garrote = ids.Rank.GarroteRank5; end
-	elseif IsSpellKnown(ids.Rank.GarroteRank4) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank4;
-		else ids.Ability.Garrote = ids.Rank.GarroteRank4; end
-	elseif IsSpellKnown(ids.Rank.GarroteRank3) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank3;
-		else ids.Ability.Garrote = ids.Rank.GarroteRank3; end
-	elseif IsSpellKnown(ids.Rank.GarroteRank2) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank2;
-		else ids.Ability.Garrote = ids.Rank.GarroteRank2; end
-	elseif IsSpellKnown(ids.Rank.GarroteRank1) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Garrote = ids.Rank.GarroteSoDRank1; end
+	if ConROC.Seasons.IsSoD and ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then
+		if IsSpellKnown(ids.Rank.GarroteRank6) then ids.Ability.Garrote = ids.Rank.GarroteSoDRank6;
+		elseif IsSpellKnown(ids.Rank.GarroteRank5) then ids.Ability.Garrote = ids.Rank.GarroteSoDRank5;
+		elseif IsSpellKnown(ids.Rank.GarroteRank4) then ids.Ability.Garrote = ids.Rank.GarroteSoDRank4;
+		elseif IsSpellKnown(ids.Rank.GarroteRank3) then ids.Ability.Garrote = ids.Rank.GarroteSoDRank3;
+		elseif IsSpellKnown(ids.Rank.GarroteRank2) then ids.Ability.Garrote = ids.Rank.GarroteSoDRank2;
+		elseif IsSpellKnown(ids.Rank.GarroteRank1) then ids.Ability.Garrote = ids.Rank.GarroteSoDRank1; end
+	else
+		if IsSpellKnown(ids.Rank.GarroteRank6) then ids.Ability.Garrote = ids.Rank.GarroteRank6;
+		elseif IsSpellKnown(ids.Rank.GarroteRank5) then ids.Ability.Garrote = ids.Rank.GarroteRank5;
+		elseif IsSpellKnown(ids.Rank.GarroteRank4) then ids.Ability.Garrote = ids.Rank.GarroteRank4;
+		elseif IsSpellKnown(ids.Rank.GarroteRank3) then ids.Ability.Garrote = ids.Rank.GarroteRank3;
+		elseif IsSpellKnown(ids.Rank.GarroteRank2) then ids.Ability.Garrote = ids.Rank.GarroteRank2;
+		elseif IsSpellKnown(ids.Rank.GarroteRank1) then ids.Ability.Garrote = ids.Rank.GarroteRank1; end
 	end
 
 	if IsSpellKnown(ids.Rank.KidneyShotRank2) then ids.Ability.KidneyShot = ids.Rank.KidneyShotRank2 end
@@ -363,32 +357,26 @@ function ConROC:UpdateSpellID()
 
 	if IsSpellKnown(ids.Rank.SliceandDiceRank2) then ids.Ability.SliceandDice = ids.Rank.SliceandDiceRank2 end
 
-	if IsSpellKnown(ids.Rank.BackstabRank9) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank9;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank8) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank8;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank7) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank7;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank6) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank6;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank5) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank5;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank4) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank4;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank3) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank3;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank2) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank2;
-		else ids.Ability.Backstab = ids.Rank.BackstabRank9; end
-	elseif IsSpellKnown(ids.Rank.BackstabRank1) then
-		if ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then ids.Ability.Backstab = ids.Rank.BackstabSoDRank1; end
+	if ConROC.Seasons.IsSoD and ConROC:RuneEquipped(ids.Engrave.Cutthroat, "hands") then
+		if IsSpellKnown(ids.Rank.BackstabRank9) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank9;
+		elseif IsSpellKnown(ids.Rank.BackstabRank8) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank8;
+		elseif IsSpellKnown(ids.Rank.BackstabRank7) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank7;
+		elseif IsSpellKnown(ids.Rank.BackstabRank6) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank6;
+		elseif IsSpellKnown(ids.Rank.BackstabRank5) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank5;
+		elseif IsSpellKnown(ids.Rank.BackstabRank4) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank4;
+		elseif IsSpellKnown(ids.Rank.BackstabRank3) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank3;
+		elseif IsSpellKnown(ids.Rank.BackstabRank2) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank2;
+		elseif IsSpellKnown(ids.Rank.BackstabRank1) then ids.Ability.Backstab = ids.Rank.BackstabSoDRank1; end
+	else
+		if IsSpellKnown(ids.Rank.BackstabRank9) then ids.Ability.Backstab = ids.Rank.BackstabRank9;
+		elseif IsSpellKnown(ids.Rank.BackstabRank8) then ids.Ability.Backstab = ids.Rank.BackstabRank8;
+		elseif IsSpellKnown(ids.Rank.BackstabRank7) then ids.Ability.Backstab = ids.Rank.BackstabRank7;
+		elseif IsSpellKnown(ids.Rank.BackstabRank6) then ids.Ability.Backstab = ids.Rank.BackstabRank6;
+		elseif IsSpellKnown(ids.Rank.BackstabRank5) then ids.Ability.Backstab = ids.Rank.BackstabRank5;
+		elseif IsSpellKnown(ids.Rank.BackstabRank4) then ids.Ability.Backstab = ids.Rank.BackstabRank4;
+		elseif IsSpellKnown(ids.Rank.BackstabRank3) then ids.Ability.Backstab = ids.Rank.BackstabRank3;
+		elseif IsSpellKnown(ids.Rank.BackstabRank2) then ids.Ability.Backstab = ids.Rank.BackstabRank2;
+		elseif IsSpellKnown(ids.Rank.BackstabRank1) then ids.Ability.Backstab = ids.Rank.BackstabRank1; end
 	end
 
 	if IsSpellKnown(ids.Rank.FeintRank4) then ids.Ability.Feint = ids.Rank.FeintRank4
